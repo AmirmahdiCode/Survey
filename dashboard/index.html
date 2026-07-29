@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظرسنجی‌ساز | داشبورد</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #f97316; --primary-dark: #ea580c; --primary-light: #fdba74; --primary-rgb: 249, 115, 22;
+      --bg: #ffffff; --bg2: #fef9f3; --bg3: #f5efe6;
+      --dark: #0f172a; --text: #334155; --text-light: #94a3b8; --white: #ffffff;
+      --card-bg: #ffffff; --card-border: #f0e8db;
+      --shadow: 0 2px 12px rgba(0,0,0,0.04); --shadow-hover: 0 8px 24px rgba(0,0,0,0.08);
+      --header-bg: #ffffff; --footer-bg: #ffffff;
+      --overlay: rgba(249, 115, 22, 0.08);
+      --red: #e74c3c; --green: #27ae60; --blue: #3b82f6;
+    }
+
+    [data-theme="dark"] {
+      --primary: #f97316; --primary-dark: #ea580c; --primary-light: #fdba74; --primary-rgb: 249, 115, 22;
+      --bg: #0f172a; --bg2: #1e293b; --bg3: #334155;
+      --dark: #e2e8f0; --text: #cbd5e1; --text-light: #64748b; --white: #1e293b;
+      --card-bg: #1e293b; --card-border: #334155;
+      --shadow: 0 2px 12px rgba(0,0,0,0.3); --shadow-hover: 0 8px 24px rgba(0,0,0,0.5);
+      --header-bg: #1e293b; --footer-bg: #1e293b;
+      --overlay: rgba(249, 115, 22, 0.12);
+    }
+
+    body {
+      font-family: 'Vazir', 'Segoe UI', Tahoma, sans-serif;
+      background: var(--bg); color: var(--text); min-height: 100vh;
+      transition: all 0.3s ease;
+    }
+
+    .header {
+      background: var(--header-bg); box-shadow: 0 1px 8px rgba(0,0,0,0.03);
+      padding: 14px 20px; position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--bg3); transition: all 0.3s ease;
+    }
+
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; max-width: 1100px; margin: 0 auto;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 10px; }
+
+    .header-logo {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 3px 12px rgba(var(--primary-rgb), 0.25);
+      font-size: 20px; color: #fff; flex-shrink: 0;
+    }
+
+    .header-title { font-size: 20px; font-weight: 700; color: var(--dark); transition: color 0.3s; }
+    .header-subtitle { font-size: 10px; color: var(--text-light); transition: color 0.3s; }
+
+    .header-btns { display: flex; align-items: center; gap: 8px; }
+
+    .btn-profile {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 600; color: var(--primary-dark); text-decoration: none;
+      padding: 8px 14px; border-radius: 10px; border: 1.5px solid var(--primary-light);
+      transition: all 0.3s ease; white-space: nowrap;
+    }
+
+    .btn-profile:hover { background: var(--overlay); }
+
+    .main-container { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
+
+    .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+
+    .quick-action-card {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px;
+      padding: 20px 16px; text-align: center; cursor: pointer; transition: all 0.3s ease;
+      box-shadow: var(--shadow); text-decoration: none; color: var(--text);
+      position: relative; overflow: hidden;
+    }
+
+    .quick-action-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      transition: all 0.3s ease;
+    }
+
+    .quick-action-card:nth-child(1)::before { background: var(--primary); }
+    .quick-action-card:nth-child(2)::before { background: var(--blue); }
+    .quick-action-card:nth-child(3)::before { background: var(--red); }
+
+    .quick-action-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+
+    .qa-icon {
+      width: 48px; height: 48px; border-radius: 12px; margin: 0 auto 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+
+    .qa-icon.create { background: var(--overlay); color: var(--primary); }
+    .qa-icon.connect { background: rgba(59, 130, 246, 0.1); color: var(--blue); }
+    .qa-icon.support { background: rgba(231, 76, 60, 0.08); color: var(--red); }
+
+    .quick-action-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--dark); transition: color 0.3s; }
+    .quick-action-card p { font-size: 11px; color: var(--text-light); }
+
+    .search-filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+
+    .search-box { flex: 2; min-width: 200px; position: relative; }
+
+    .search-box input {
+      width: 100%; padding: 12px 40px 12px 16px; border: 1.5px solid var(--card-border);
+      border-radius: 12px; font-size: 13px; color: var(--dark); background: var(--card-bg);
+      outline: none; font-family: inherit; transition: all 0.3s;
+    }
+
+    .search-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1); }
+    .search-box i { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 14px; }
+
+    .filter-select { flex: 1; min-width: 140px; }
+
+    .filter-select select {
+      width: 100%; padding: 12px 16px; border: 1.5px solid var(--card-border); border-radius: 12px;
+      font-size: 13px; color: var(--dark); background: var(--card-bg); outline: none; font-family: inherit;
+      cursor: pointer; appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: left 16px center;
+    }
+
+    .filter-select select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1); }
+
+    .section-title {
+      font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px; transition: color 0.3s;
+    }
+
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--bg3); transition: background 0.3s; }
+    .survey-count { font-size: 12px; color: var(--text-light); font-weight: 400; }
+
+    .surveys-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+    .survey-card {
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
+      padding: 16px; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow);
+      position: relative; overflow: hidden;
+    }
+
+    .survey-card::before {
+      content: ''; position: absolute; right: 0; top: 0; width: 3px; height: 100%;
+      background: var(--primary-light); transition: all 0.3s ease;
+    }
+
+    .survey-card.active::before { background: var(--green); }
+    .survey-card.ended::before { background: var(--text-light); }
+
+    .survey-card:hover { transform: translateX(-4px); box-shadow: var(--shadow-hover); border-color: var(--primary-light); }
+
+    .survey-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+
+    .survey-card-title { font-size: 14px; font-weight: 700; color: var(--dark); line-height: 1.5; transition: color 0.3s; }
+
+    .survey-status { font-size: 10px; padding: 4px 10px; border-radius: 12px; font-weight: 600; white-space: nowrap; }
+    .status-active { background: rgba(39, 174, 96, 0.1); color: var(--green); }
+    .status-draft { background: var(--overlay); color: var(--primary); }
+    .status-ended { background: var(--bg2); color: var(--text-light); }
+
+    .survey-card-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; }
+    .survey-meta-item { font-size: 11px; color: var(--text-light); display: flex; align-items: center; gap: 4px; }
+
+    .survey-card-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--bg3); }
+
+    .btn-sm {
+      font-size: 11px; padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer;
+      font-family: inherit; font-weight: 600; transition: all 0.3s ease; display: flex; align-items: center; gap: 4px;
+      text-decoration: none; white-space: nowrap;
+    }
+
+    .btn-sm-primary { background: var(--primary); color: #fff; }
+    .btn-sm-primary:hover { background: var(--primary-dark); }
+    .btn-sm-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary-light); }
+    .btn-sm-outline:hover { background: var(--overlay); }
+    .btn-sm-ghost { background: transparent; color: var(--text-light); }
+    .btn-sm-ghost:hover { background: var(--bg2); }
+
+    .empty-state {
+      text-align: center; padding: 60px 20px; color: var(--text-light); grid-column: 1/-1;
+    }
+
+    .empty-state i { font-size: 52px; display: block; margin-bottom: 16px; opacity: 0.6; }
+    .empty-state h3 { font-size: 16px; color: var(--dark); margin-bottom: 8px; }
+    .empty-state p { font-size: 12px; margin-bottom: 16px; }
+
+    .empty-state .btn-create {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 10px;
+      text-decoration: none; font-weight: 700; font-size: 14px; transition: all 0.3s ease;
+    }
+
+    .empty-state .btn-create:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+    .footer { text-align: center; padding: 20px; background: var(--footer-bg); border-top: 1px solid var(--bg3); margin-top: 20px; transition: all 0.3s ease; }
+    .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; }
+    .footer-links a { color: var(--primary-dark); font-size: 11px; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--dark); }
+    .footer-text { font-size: 10px; color: var(--text-light); transition: color 0.3s; }
+
+    .floating-support {
+      position: fixed; bottom: 24px; right: 24px;
+      width: 56px; height: 56px;
+      background: linear-gradient(145deg, #2196F3, #1976D2);
+      color: #fff; border: none; border-radius: 50%;
+      font-size: 24px; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(33,150,243,0.35);
+      z-index: 999; display: flex; align-items: center; justify-content: center;
+      transition: all 0.3s ease; text-decoration: none;
+    }
+
+    .floating-support:hover { transform: scale(1.1); box-shadow: 0 10px 28px rgba(33,150,243,0.5); }
+    .floating-support i { animation: float 2s ease-in-out infinite; }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+
+    @media (max-width: 768px) {
+      .quick-actions { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .quick-action-card { padding: 14px 8px; }
+      .quick-action-card h3 { font-size: 11px; }
+      .quick-action-card p { font-size: 9px; }
+      .qa-icon { width: 38px; height: 38px; font-size: 18px; }
+      .surveys-grid { grid-template-columns: 1fr; }
+      .header-title { font-size: 17px; }
+      .search-filter-bar { flex-direction: column; }
+      .floating-support { bottom: 16px; right: 16px; width: 48px; height: 48px; font-size: 20px; }
+    }
+
+    @media (max-width: 400px) {
+      .quick-actions { grid-template-columns: 1fr; }
+      .quick-action-card { display: flex; align-items: center; gap: 12px; text-align: right; padding: 12px 14px; }
+      .quick-action-card .qa-icon { margin: 0; width: 36px; height: 36px; font-size: 16px; }
+      .quick-action-card h3 { font-size: 12px; }
+      .survey-card-actions { flex-wrap: wrap; }
+      .btn-sm { font-size: 10px; padding: 5px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-right">
+        <div class="header-logo">
+          <i class="fa-solid fa-square-poll-vertical"></i>
+        </div>
+        <div>
+          <div class="header-title">نظرسنجی‌ساز</div>
+          <div class="header-subtitle">ساخت و مدیریت نظرسنجی‌های حرفه‌ای</div>
+        </div>
+      </div>
+      <div class="header-btns">
+        <a href="profile/" class="btn-profile"><i class="fa-solid fa-user"></i> حساب کاربری</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="main-container">
+
+    <div class="quick-actions">
+      <a href="builder/" class="quick-action-card">
+        <div class="qa-icon create"><i class="fa-solid fa-plus"></i></div>
+        <h3>ساخت فرم جدید</h3>
+        <p>ایجاد نظرسنجی تازه</p>
+      </a>
+      <a href="connect/" class="quick-action-card">
+        <div class="qa-icon connect"><i class="fa-solid fa-link"></i></div>
+        <h3>اتصال به کانال</h3>
+        <p>مدیریت کانال ایتا</p>
+      </a>
+      <a href="support/" class="quick-action-card">
+        <div class="qa-icon support"><i class="fa-solid fa-heart"></i></div>
+        <h3>حمایت از سازنده</h3>
+        <p>کمک به توسعه</p>
+      </a>
+    </div>
+
+    <div class="search-filter-bar">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="جستجوی نظرسنجی...">
+      </div>
+      <div class="filter-select">
+        <select id="filterSelect">
+          <option value="all">همه</option>
+          <option value="active">فعال</option>
+          <option value="draft">پیش‌نویس</option>
+          <option value="ended">پایان‌یافته</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <i class="fa-solid fa-list-check"></i> نظرسنجی‌های من
+      <span class="survey-count">(۳ نظرسنجی)</span>
+    </div>
+
+    <div class="surveys-grid" id="surveysGrid">
+      
+      <div class="survey-card active">
+        <div class="survey-card-header">
+          <span class="survey-card-title">نظرسنجی رضایت مشتریان — تابستان ۱۴۰۵</span>
+          <span class="survey-status status-active">● فعال</span>
+        </div>
+        <div class="survey-card-meta">
+          <span class="survey-meta-item"><i class="fa-solid fa-users"></i> ۱۲۷ پاسخ</span>
+          <span class="survey-meta-item"><i class="fa-solid fa-clock"></i> ۵ روز تا پایان</span>
+          <span class="survey-meta-item"><i class="fa-solid fa-calendar"></i> ۱۲ تیر ۱۴۰۵</span>
+        </div>
+        <div class="survey-card-actions">
+          <button class="btn-sm btn-sm-outline"><i class="fa-solid fa-chart-bar"></i> نتایج</button>
+          <button class="btn-sm btn-sm-outline"><i class="fa-solid fa-share-alt"></i> اشتراک</button>
+          <button class="btn-sm btn-sm-ghost"><i class="fa-solid fa-pen"></i> ویرایش</button>
+        </div>
+      </div>
+
+      <div class="survey-card">
+        <div class="survey-card-header">
+          <span class="survey-card-title">نظرسنجی انتخاب غذای هفتگی</span>
+          <span class="survey-status status-draft">پیش‌نویس</span>
+        </div>
+        <div class="survey-card-meta">
+          <span class="survey-meta-item"><i class="fa-solid fa-question-circle"></i> ۵ سوال</span>
+          <span class="survey-meta-item"><i class="fa-solid fa-calendar"></i> ۱۵ تیر ۱۴۰۵</span>
+        </div>
+        <div class="survey-card-actions">
+          <button class="btn-sm btn-sm-primary"><i class="fa-solid fa-paper-plane"></i> انتشار</button>
+          <button class="btn-sm btn-sm-ghost"><i class="fa-solid fa-pen"></i> ویرایش</button>
+          <button class="btn-sm btn-sm-ghost" style="color:#e74c3c;"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+
+      <div class="survey-card ended">
+        <div class="survey-card-header">
+          <span class="survey-card-title">نظرسنجی بهترین همکار ماه</span>
+          <span class="survey-status status-ended">پایان‌یافته</span>
+        </div>
+        <div class="survey-card-meta">
+          <span class="survey-meta-item"><i class="fa-solid fa-users"></i> ۴۳ پاسخ</span>
+          <span class="survey-meta-item"><i class="fa-solid fa-calendar-check"></i> ۱ تیر ۱۴۰۵</span>
+        </div>
+        <div class="survey-card-actions">
+          <button class="btn-sm btn-sm-outline"><i class="fa-solid fa-chart-bar"></i> نتایج</button>
+          <button class="btn-sm btn-sm-ghost"><i class="fa-solid fa-copy"></i> کپی</button>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="about/"><i class="fa-solid fa-circle-info"></i> درباره ما</a>
+      <a href="guide/"><i class="fa-solid fa-book"></i> راهنما</a>
+      <a href="contact/"><i class="fa-solid fa-phone"></i> ارتباط با ما</a>
+    </div>
+    <p class="footer-text">نظرسنجی‌ساز ایتا — کلیه حقوق محفوظ است</p>
+  </footer>
+
+  <a href="support/" class="floating-support" title="پشتیبانی">
+    <i class="fa-solid fa-headset"></i>
+  </a>
+
+</body>
+</html>
