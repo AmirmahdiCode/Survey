@@ -76,22 +76,28 @@
     .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
 
     .quick-action-card {
-      background: var(--card-bg); border-radius: 14px; padding: 20px 16px; text-align: center;
+      background: var(--card-bg); border-radius: 14px; padding: 22px 16px; text-align: center;
       cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow);
       text-decoration: none; color: var(--text); position: relative; overflow: hidden;
-      border: 2px dashed var(--primary-light);
+      border: 2px dashed var(--primary-light); display: flex; flex-direction: column; align-items: center;
     }
 
     .quick-action-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--primary); }
 
-    .qa-icon {
-      width: 48px; height: 48px; border-radius: 12px; margin: 0 auto 10px;
-      display: flex; align-items: center; justify-content: center; font-size: 22px;
-      background: var(--overlay); color: var(--primary);
+    .qa-icon-circle {
+      width: 56px; height: 56px; border-radius: 50%; margin-bottom: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 24px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff; box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.3);
     }
 
-    .quick-action-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: var(--dark); transition: color 0.3s; }
-    .quick-action-card p { font-size: 11px; color: var(--text-light); }
+    .quick-action-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: var(--dark); transition: color 0.3s; }
+    .quick-action-card p { font-size: 10px; color: var(--text-light); }
+
+    .quick-action-card .card-badge {
+      font-size: 9px; background: var(--primary); color: #fff; padding: 3px 10px; border-radius: 12px;
+      font-weight: 600; margin-top: 8px;
+    }
 
     .section-title {
       font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 12px;
@@ -168,17 +174,6 @@
     .btn-sm-ghost { background: transparent; color: var(--text-light); }
     .btn-sm-ghost:hover { background: var(--bg2); }
 
-    .support-card {
-      border: 2px dashed var(--primary-light); background: var(--card-bg); display: flex;
-      align-items: center; gap: 14px; padding: 16px; cursor: pointer;
-      transition: all 0.3s ease; border-radius: 12px;
-    }
-
-    .support-card:hover { border-color: var(--primary); background: var(--overlay); transform: translateY(-2px); }
-    .support-card img { width: 56px; height: 56px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
-    .support-card h4 { font-size: 13px; color: var(--dark); margin-bottom: 2px; }
-    .support-card p { font-size: 11px; color: var(--text-light); }
-
     .empty-state {
       text-align: center; padding: 60px 20px; color: var(--text-light); grid-column: 1/-1;
     }
@@ -227,9 +222,10 @@
     @media (max-width: 768px) {
       .quick-actions { grid-template-columns: repeat(3, 1fr); gap: 8px; }
       .quick-action-card { padding: 14px 8px; }
+      .qa-icon-circle { width: 42px; height: 42px; font-size: 20px; margin-bottom: 8px; }
       .quick-action-card h3 { font-size: 11px; }
       .quick-action-card p { font-size: 9px; }
-      .qa-icon { width: 36px; height: 36px; font-size: 18px; }
+      .quick-action-card .card-badge { font-size: 8px; }
       .surveys-grid { grid-template-columns: 1fr; }
       .header-title { font-size: 17px; }
       .search-filter-bar { flex-direction: column; }
@@ -239,9 +235,9 @@
 
     @media (max-width: 400px) {
       .quick-actions { grid-template-columns: 1fr; }
-      .quick-action-card { display: flex; align-items: center; gap: 12px; text-align: right; padding: 12px 14px; }
-      .quick-action-card .qa-icon { margin: 0; width: 34px; height: 34px; font-size: 16px; }
-      .quick-action-card h3 { font-size: 12px; }
+      .quick-action-card { flex-direction: row; align-items: center; gap: 12px; text-align: right; padding: 12px 14px; }
+      .qa-icon-circle { margin: 0; width: 40px; height: 40px; font-size: 18px; }
+      .quick-action-card .card-badge { margin-top: 0; margin-right: auto; }
       .survey-card-actions { flex-wrap: wrap; }
       .btn-sm { font-size: 10px; padding: 5px 10px; }
     }
@@ -270,19 +266,22 @@
 
     <div class="quick-actions">
       <a href="builder/" class="quick-action-card">
-        <div class="qa-icon"><i class="fa-solid fa-plus"></i></div>
+        <div class="qa-icon-circle"><i class="fa-solid fa-plus"></i></div>
         <h3>ساخت فرم جدید</h3>
         <p>ایجاد نظرسنجی تازه</p>
+        <span class="card-badge">جدید</span>
       </a>
       <a href="connect/" class="quick-action-card">
-        <div class="qa-icon"><i class="fa-solid fa-link"></i></div>
+        <div class="qa-icon-circle"><i class="fa-solid fa-link"></i></div>
         <h3>اتصال به کانال</h3>
         <p>مدیریت کانال ایتا</p>
+        <span class="card-badge">ویژه</span>
       </a>
       <a href="https://eitaa.com/amirmahdi_code" target="_blank" class="quick-action-card">
-        <div class="qa-icon"><i class="fa-solid fa-heart"></i></div>
+        <div class="qa-icon-circle"><i class="fa-solid fa-heart"></i></div>
         <h3>حمایت از سازنده</h3>
         <p>کمک به توسعه</p>
+        <span class="card-badge">رسمی</span>
       </a>
     </div>
 
@@ -340,14 +339,6 @@
           <button class="btn-sm btn-sm-ghost" style="color:#e74c3c;"><i class="fa-solid fa-trash"></i></button>
         </div>
       </div>
-
-      <a href="https://eitaa.com/amirmahdi_code" target="_blank" class="support-card" style="text-decoration:none;color:inherit;">
-        <img src="https://cdn.imgurl.ir/uploads/m87412_4b5310ee-fa5a-4d2e-a58c-a9337ddb4f92.png" alt="حمایت">
-        <div>
-          <h4>حمایت از سازنده</h4>
-          <p>از سازنده حمایت کنید</p>
-        </div>
-      </a>
 
       <div class="survey-card ended">
         <div class="survey-card-header">
