@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>نظرسنجی‌ساز | داشبورد</title>
+  <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
   <style>
@@ -363,151 +364,180 @@
   </a>
 
   <script>
-    const PUBLIC_API = 'https://script.google.com/macros/s/AKfycbyBDOkj70YUmGx5F3f3bAybEVNuU9iop8G6ibHhLYU40hQ-jGOX-6pkDLa6PpfpcWIVfw/exec';
-    const PRIVATE_API = 'https://script.google.com/macros/s/AKfycbxNwRKWcYmAyQ33Jr_V1CxPwrsTpGmSswzuZVn0ENUz6RZ_NAD-1E6XCBaiKOqfnCM-XA/exec';
+    (function() {
+      var PUBLIC_API = 'https://script.google.com/macros/s/AKfycbyBDOkj70YUmGx5F3f3bAybEVNuU9iop8G6ibHhLYU40hQ-jGOX-6pkDLa6PpfpcWIVfw/exec';
+      var PRIVATE_API = 'https://script.google.com/macros/s/AKfycbxNwRKWcYmAyQ33Jr_V1CxPwrsTpGmSswzuZVn0ENUz6RZ_NAD-1E6XCBaiKOqfnCM-XA/exec';
 
-    let allSurveys = [];
-    let currentUser = null;
+      var allSurveys = [];
+      var currentUser = null;
 
-    function safeFetch(url, options) {
-      return fetch(url, options).then(function(r) {
-        if (!r.ok) return null;
-        return r.json().catch(function() { return null; });
-      }).catch(function() {
-        return null;
-      });
-    }
-
-    function getInitData() {
-      if (window.Eitaa && window.Eitaa.WebApp) {
-        return window.Eitaa.WebApp.initData || '';
-      }
-      return '';
-    }
-
-    function getUserId() {
-      if (window.Eitaa && window.Eitaa.WebApp && window.Eitaa.WebApp.initDataUnsafe) {
-        return String(window.Eitaa.WebApp.initDataUnsafe.user && window.Eitaa.WebApp.initDataUnsafe.user.id || '');
-      }
-      return '';
-    }
-
-    async function loadDashboard() {
-      var userId = getUserId();
-      currentUser = userId;
-
-      await Promise.all([
-        loadStats(),
-        loadSurveys(),
-        trackView()
-      ]);
-    }
-
-    async function loadStats() {
-      var allData = await safeFetch(PUBLIC_API + '?action=getStats&id=all');
-      if (allData && allData.seen) {
-        var entries = allData.seen.split(',').filter(function(e) { return e.trim(); });
-        document.getElementById('footerVisits').textContent = entries.length.toLocaleString('fa-IR');
+      function initTheme() {
+        if (window.Eitaa && window.Eitaa.WebApp) {
+          var scheme = window.Eitaa.WebApp.colorScheme;
+          if (scheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+          } else {
+            document.documentElement.removeAttribute('data-theme');
+          }
+          window.Eitaa.WebApp.onEvent('themeChanged', function() {
+            var newScheme = window.Eitaa.WebApp.colorScheme;
+            if (newScheme === 'dark') {
+              document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+              document.documentElement.removeAttribute('data-theme');
+            }
+          });
+        }
       }
 
-      var usersData = await safeFetch(PUBLIC_API + '?action=getUsersCount');
-      if (usersData && typeof usersData.count === 'number') {
-        document.getElementById('footerUsers').textContent = usersData.count.toLocaleString('fa-IR');
+      function ready() {
+        if (window.Eitaa && window.Eitaa.WebApp) {
+          window.Eitaa.WebApp.ready();
+        }
       }
 
-      var activeData = await safeFetch(PUBLIC_API + '?action=getActiveSurveysCount');
-      if (activeData && typeof activeData.count === 'number') {
-        document.getElementById('footerActive').textContent = activeData.count.toLocaleString('fa-IR');
-      }
-    }
-
-    async function loadSurveys() {
-      var userId = currentUser;
-      if (!userId) {
-        document.getElementById('surveysGrid').innerHTML = '<div class="empty-state"><i class="fa-solid fa-circle-exclamation"></i><p>لطفاً از طریق ایتا وارد شوید</p></div>';
-        return;
-      }
-
-      var surveys = await safeFetch(PUBLIC_API + '?action=getSurveys&user_id=' + userId);
-
-      if (!surveys || surveys.error) {
-        allSurveys = [];
-      } else {
-        allSurveys = Array.isArray(surveys) ? surveys : [];
-      }
-
-      document.getElementById('surveyCount').textContent = '(' + allSurveys.length + ' نظرسنجی)';
-      renderSurveys();
-    }
-
-    function renderSurveys() {
-      var grid = document.getElementById('surveysGrid');
-      var search = (document.getElementById('searchInput') && document.getElementById('searchInput').value || '').toLowerCase().trim();
-      var filter = (document.getElementById('filterSelect') && document.getElementById('filterSelect').value || 'all');
-
-      var filtered = allSurveys;
-      if (search) {
-        filtered = filtered.filter(function(s) {
-          return (s.title || '').toLowerCase().indexOf(search) !== -1;
-        });
-      }
-      if (filter !== 'all') {
-        filtered = filtered.filter(function(s) {
-          return (s.options || 'draft') === filter;
+      function safeFetch(url, options) {
+        return fetch(url, options).then(function(r) {
+          if (!r.ok) return null;
+          return r.json().catch(function() { return null; });
+        }).catch(function() {
+          return null;
         });
       }
 
-      if (allSurveys.length === 0) {
-        grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-folder-open"></i><h3>هنوز نظرسنجی‌ای نساخته‌اید</h3><p>اولین نظرسنجی خود را بسازید و به اشتراک بگذارید</p><a href="../builder/" class="btn-create"><i class="fa-solid fa-plus"></i> ساخت فرم جدید</a></div>';
-        return;
+      function getInitData() {
+        if (window.Eitaa && window.Eitaa.WebApp) {
+          return window.Eitaa.WebApp.initData || '';
+        }
+        return '';
       }
 
-      if (filtered.length === 0) {
-        grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-search"></i><p>نظرسنجی‌ای یافت نشد</p></div>';
-        return;
+      function getUserId() {
+        if (window.Eitaa && window.Eitaa.WebApp && window.Eitaa.WebApp.initDataUnsafe) {
+          return String(window.Eitaa.WebApp.initDataUnsafe.user && window.Eitaa.WebApp.initDataUnsafe.user.id || '');
+        }
+        return '';
       }
 
-      grid.innerHTML = filtered.map(function(s) {
-        var participants = s.participants ? s.participants.split(',').filter(function(p) { return p.trim(); }).length : 0;
-        var dateStr = s.date ? new Date(s.date).toLocaleDateString('fa-IR') : '—';
-        var statusText = (s.options === 'active') ? '● فعال' : (s.options === 'ended') ? 'پایان‌یافته' : 'پیش‌نویس';
+      async function loadDashboard() {
+        var userId = getUserId();
+        currentUser = userId;
 
-        return '<div class="survey-card"><div class="survey-card-header"><span class="survey-card-title">' + (s.title || 'بدون عنوان') + '</span><span class="survey-status">' + statusText + '</span></div><div class="survey-card-meta"><span class="survey-meta-item"><i class="fa-solid fa-users"></i> ' + participants + ' پاسخ</span><span class="survey-meta-item"><i class="fa-solid fa-calendar"></i> ' + dateStr + '</span></div><div class="survey-card-actions"><button class="btn-sm btn-sm-outline" onclick="viewResults(\'' + s.survey_id + '\')"><i class="fa-solid fa-chart-bar"></i> نتایج</button><button class="btn-sm btn-sm-outline" onclick="shareSurvey(\'' + s.survey_id + '\')"><i class="fa-solid fa-share-alt"></i> اشتراک</button><button class="btn-sm btn-sm-ghost" onclick="editSurvey(\'' + s.survey_id + '\')"><i class="fa-solid fa-pen"></i> ویرایش</button></div></div>';
-      }).join('');
-    }
-
-    async function trackView() {
-      var userId = currentUser;
-      if (!userId) return;
-
-      var initData = getInitData();
-      var data = await safeFetch(PRIVATE_API, {
-        method: 'POST',
-        body: JSON.stringify({
-          action: 'trackView',
-          survey_id: 'all',
-          user_id: userId,
-          init_data: initData
-        })
-      });
-
-      if (data && data.status === 'ok') {
-        loadStats();
+        await Promise.all([
+          loadStats(),
+          loadSurveys(),
+          trackView()
+        ]);
       }
-    }
 
-    function viewResults(id) { window.location.href = '../results/?id=' + id; }
-    function shareSurvey(id) {
-      var link = 'https://eitaa.com/app/nazar_sanj?startapp=' + id;
-      if (navigator.share) {
-        navigator.share({ title: 'نظرسنجی', text: 'در این نظرسنجی شرکت کنید', url: link }).catch(function() {});
-      } else {
-        prompt('لینک نظرسنجی:', link);
+      async function loadStats() {
+        var allData = await safeFetch(PUBLIC_API + '?action=getStats&id=all');
+        if (allData && allData.seen) {
+          var entries = allData.seen.split(',').filter(function(e) { return e.trim(); });
+          document.getElementById('footerVisits').textContent = entries.length.toLocaleString('fa-IR');
+        }
+
+        var usersData = await safeFetch(PUBLIC_API + '?action=getUsersCount');
+        if (usersData && typeof usersData.count === 'number') {
+          document.getElementById('footerUsers').textContent = usersData.count.toLocaleString('fa-IR');
+        }
+
+        var activeData = await safeFetch(PUBLIC_API + '?action=getActiveSurveysCount');
+        if (activeData && typeof activeData.count === 'number') {
+          document.getElementById('footerActive').textContent = activeData.count.toLocaleString('fa-IR');
+        }
       }
-    }
-    function editSurvey(id) { window.location.href = '../builder/?id=' + id; }
 
-    loadDashboard();
+      async function loadSurveys() {
+        var userId = currentUser;
+        if (!userId) {
+          document.getElementById('surveysGrid').innerHTML = '<div class="empty-state"><i class="fa-solid fa-circle-exclamation"></i><p>لطفاً از طریق ایتا وارد شوید</p></div>';
+          return;
+        }
+
+        var surveys = await safeFetch(PUBLIC_API + '?action=getSurveys&user_id=' + userId);
+
+        if (!surveys || surveys.error) {
+          allSurveys = [];
+        } else {
+          allSurveys = Array.isArray(surveys) ? surveys : [];
+        }
+
+        document.getElementById('surveyCount').textContent = '(' + allSurveys.length + ' نظرسنجی)';
+        renderSurveys();
+      }
+
+      function renderSurveys() {
+        var grid = document.getElementById('surveysGrid');
+        var search = (document.getElementById('searchInput') && document.getElementById('searchInput').value || '').toLowerCase().trim();
+        var filter = (document.getElementById('filterSelect') && document.getElementById('filterSelect').value || 'all');
+
+        var filtered = allSurveys;
+        if (search) {
+          filtered = filtered.filter(function(s) {
+            return (s.title || '').toLowerCase().indexOf(search) !== -1;
+          });
+        }
+        if (filter !== 'all') {
+          filtered = filtered.filter(function(s) {
+            return (s.options || 'draft') === filter;
+          });
+        }
+
+        if (allSurveys.length === 0) {
+          grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-folder-open"></i><h3>هنوز نظرسنجی‌ای نساخته‌اید</h3><p>اولین نظرسنجی خود را بسازید و به اشتراک بگذارید</p><a href="../builder/" class="btn-create"><i class="fa-solid fa-plus"></i> ساخت فرم جدید</a></div>';
+          return;
+        }
+
+        if (filtered.length === 0) {
+          grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-search"></i><p>نظرسنجی‌ای یافت نشد</p></div>';
+          return;
+        }
+
+        grid.innerHTML = filtered.map(function(s) {
+          var participants = s.participants ? s.participants.split(',').filter(function(p) { return p.trim(); }).length : 0;
+          var dateStr = s.date ? new Date(s.date).toLocaleDateString('fa-IR') : '—';
+          var statusText = (s.options === 'active') ? '● فعال' : (s.options === 'ended') ? 'پایان‌یافته' : 'پیش‌نویس';
+
+          return '<div class="survey-card"><div class="survey-card-header"><span class="survey-card-title">' + (s.title || 'بدون عنوان') + '</span><span class="survey-status">' + statusText + '</span></div><div class="survey-card-meta"><span class="survey-meta-item"><i class="fa-solid fa-users"></i> ' + participants + ' پاسخ</span><span class="survey-meta-item"><i class="fa-solid fa-calendar"></i> ' + dateStr + '</span></div><div class="survey-card-actions"><button class="btn-sm btn-sm-outline" onclick="window._viewResults(\'' + s.survey_id + '\')"><i class="fa-solid fa-chart-bar"></i> نتایج</button><button class="btn-sm btn-sm-outline" onclick="window._shareSurvey(\'' + s.survey_id + '\')"><i class="fa-solid fa-share-alt"></i> اشتراک</button><button class="btn-sm btn-sm-ghost" onclick="window._editSurvey(\'' + s.survey_id + '\')"><i class="fa-solid fa-pen"></i> ویرایش</button></div></div>';
+        }).join('');
+      }
+
+      async function trackView() {
+        var userId = currentUser;
+        if (!userId) return;
+
+        var initData = getInitData();
+        var data = await safeFetch(PRIVATE_API, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'trackView',
+            survey_id: 'all',
+            user_id: userId,
+            init_data: initData
+          })
+        });
+
+        if (data && data.status === 'ok') {
+          loadStats();
+        }
+      }
+
+      window._viewResults = function(id) { window.location.href = '../results/?id=' + id; };
+      window._shareSurvey = function(id) {
+        var link = 'https://eitaa.com/app/nazar_sanj?startapp=' + id;
+        if (navigator.share) {
+          navigator.share({ title: 'نظرسنجی', text: 'در این نظرسنجی شرکت کنید', url: link }).catch(function() {});
+        } else {
+          prompt('لینک نظرسنجی:', link);
+        }
+      };
+      window._editSurvey = function(id) { window.location.href = '../builder/?id=' + id; };
+
+      initTheme();
+      ready();
+      loadDashboard();
+    })();
   </script>
 
 </body>
