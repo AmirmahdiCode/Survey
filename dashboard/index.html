@@ -17,7 +17,6 @@
       --shadow: 0 2px 12px rgba(0,0,0,0.04); --shadow-hover: 0 8px 24px rgba(0,0,0,0.08);
       --header-bg: #ffffff; --footer-bg: #fef9f3;
       --overlay: rgba(249, 115, 22, 0.08);
-      --green: #27ae60;
     }
 
     [data-theme="dark"] {
@@ -73,31 +72,32 @@
 
     .main-container { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
 
-    .quick-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+    .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
 
-    .quick-action-card {
-      background: var(--card-bg); border-radius: 14px; padding: 22px 16px; text-align: center;
-      cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow);
-      text-decoration: none; color: var(--text); position: relative; overflow: hidden;
-      border: 2px dashed var(--primary-light); display: flex; flex-direction: column; align-items: center;
+    .product-card {
+      background: var(--card-bg); border-radius: 12px; overflow: hidden;
+      box-shadow: var(--shadow); transition: all 0.3s ease; cursor: pointer;
+      border: 2px dashed var(--primary-light); text-decoration: none; color: var(--text);
     }
 
-    .quick-action-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--primary); }
+    .product-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--primary); }
 
-    .qa-icon-circle {
-      width: 56px; height: 56px; border-radius: 50%; margin-bottom: 12px;
-      display: flex; align-items: center; justify-content: center; font-size: 24px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #fff; box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.3);
+    .product-image {
+      width: 100%; height: 120px; object-fit: cover;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--overlay), rgba(var(--primary-rgb), 0.04));
+      font-size: 44px; color: var(--primary);
     }
 
-    .quick-action-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; color: var(--dark); transition: color 0.3s; }
-    .quick-action-card p { font-size: 10px; color: var(--text-light); }
+    .product-image img { width: 100%; height: 100%; object-fit: cover; }
 
-    .quick-action-card .card-badge {
-      font-size: 9px; background: var(--primary); color: #fff; padding: 3px 10px; border-radius: 12px;
-      font-weight: 600; margin-top: 8px;
-    }
+    .product-info { padding: 12px 14px; }
+    .product-name { font-size: 13px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+    .product-meta { font-size: 10px; color: var(--text-light); }
+    .product-price { font-size: 11px; font-weight: 700; color: var(--primary); }
+    .product-price span { font-size: 9px; font-weight: 400; color: var(--text-light); margin-right: 2px; }
+    .product-like-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--bg3); }
+    .product-likes-count { font-size: 10px; color: var(--text-light); }
 
     .section-title {
       font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 12px;
@@ -140,21 +140,15 @@
 
     .survey-card::before {
       content: ''; position: absolute; right: 0; top: 0; width: 3px; height: 100%;
-      background: var(--primary-light); transition: all 0.3s ease;
+      background: var(--primary); transition: all 0.3s ease;
     }
-
-    .survey-card.active::before { background: var(--green); }
-    .survey-card.ended::before { background: var(--text-light); }
 
     .survey-card:hover { transform: translateX(-4px); box-shadow: var(--shadow-hover); border-color: var(--primary-light); }
 
     .survey-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
     .survey-card-title { font-size: 14px; font-weight: 700; color: var(--dark); line-height: 1.5; transition: color 0.3s; }
 
-    .survey-status { font-size: 10px; padding: 4px 10px; border-radius: 12px; font-weight: 600; white-space: nowrap; }
-    .status-active { background: rgba(39, 174, 96, 0.1); color: var(--green); }
-    .status-draft { background: var(--overlay); color: var(--primary); }
-    .status-ended { background: var(--bg2); color: var(--text-light); }
+    .survey-status { font-size: 10px; padding: 4px 10px; border-radius: 12px; font-weight: 600; white-space: nowrap; background: var(--overlay); color: var(--primary); }
 
     .survey-card-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; }
     .survey-meta-item { font-size: 11px; color: var(--text-light); display: flex; align-items: center; gap: 4px; }
@@ -219,25 +213,16 @@
 
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
 
+    @media (max-width: 992px) { .products-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } .product-image { height: 100px; } }
     @media (max-width: 768px) {
-      .quick-actions { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-      .quick-action-card { padding: 14px 8px; }
-      .qa-icon-circle { width: 42px; height: 42px; font-size: 20px; margin-bottom: 8px; }
-      .quick-action-card h3 { font-size: 11px; }
-      .quick-action-card p { font-size: 9px; }
-      .quick-action-card .card-badge { font-size: 8px; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .surveys-grid { grid-template-columns: 1fr; }
       .header-title { font-size: 17px; }
       .search-filter-bar { flex-direction: column; }
       .floating-support { bottom: 16px; right: 16px; width: 48px; height: 48px; font-size: 20px; }
       .footer-stats { gap: 14px; }
     }
-
     @media (max-width: 400px) {
-      .quick-actions { grid-template-columns: 1fr; }
-      .quick-action-card { flex-direction: row; align-items: center; gap: 12px; text-align: right; padding: 12px 14px; }
-      .qa-icon-circle { margin: 0; width: 40px; height: 40px; font-size: 18px; }
-      .quick-action-card .card-badge { margin-top: 0; margin-right: auto; }
       .survey-card-actions { flex-wrap: wrap; }
       .btn-sm { font-size: 10px; padding: 5px 10px; }
     }
@@ -257,32 +242,65 @@
         </div>
       </div>
       <div class="header-btns">
-        <a href="profile/" class="btn-profile"><i class="fa-solid fa-user"></i> حساب کاربری</a>
+        <a href="../profile/" class="btn-profile"><i class="fa-solid fa-user"></i> حساب کاربری</a>
       </div>
     </div>
   </header>
 
   <section class="main-container">
 
-    <div class="quick-actions">
-      <a href="builder/" class="quick-action-card">
-        <div class="qa-icon-circle"><i class="fa-solid fa-plus"></i></div>
-        <h3>ساخت فرم جدید</h3>
-        <p>ایجاد نظرسنجی تازه</p>
-        <span class="card-badge">جدید</span>
+    <div class="products-grid">
+
+      <a href="../builder/" class="product-card">
+        <div class="product-image"><i class="fa-solid fa-pen-to-square"></i></div>
+        <div class="product-info">
+          <div class="product-name">ساخت فرم جدید</div>
+          <div class="product-meta">ایجاد نظرسنجی تازه</div>
+          <div class="product-like-row">
+            <span class="product-price">کلیک کنید</span>
+            <span class="product-likes-count"><i class="fa-solid fa-plus"></i> جدید</span>
+          </div>
+        </div>
       </a>
-      <a href="connect/" class="quick-action-card">
-        <div class="qa-icon-circle"><i class="fa-solid fa-link"></i></div>
-        <h3>اتصال به کانال</h3>
-        <p>مدیریت کانال ایتا</p>
-        <span class="card-badge">ویژه</span>
+
+      <a href="../ai/" class="product-card">
+        <div class="product-image"><i class="fa-solid fa-robot"></i></div>
+        <div class="product-info">
+          <div class="product-name">هوش مصنوعی</div>
+          <div class="product-meta">ساخت نظرسنجی با Ai</div>
+          <div class="product-like-row">
+            <span class="product-price">رایگان <span>امتحان کنید</span></span>
+            <span class="product-likes-count"><i class="fa-solid fa-wand-magic-sparkles"></i> خلاقیت بی‌نهایت</span>
+          </div>
+        </div>
       </a>
-      <a href="https://eitaa.com/amirmahdi_code" target="_blank" class="quick-action-card">
-        <div class="qa-icon-circle"><i class="fa-solid fa-heart"></i></div>
-        <h3>حمایت از سازنده</h3>
-        <p>کمک به توسعه</p>
-        <span class="card-badge">رسمی</span>
+
+      <a href="../connect/" class="product-card">
+        <div class="product-image"><i class="fa-solid fa-link"></i></div>
+        <div class="product-info">
+          <div class="product-name">اتصال به کانال</div>
+          <div class="product-meta">مدیریت کانال ایتا</div>
+          <div class="product-like-row">
+            <span class="product-price">ویژه <span>کانال‌ها</span></span>
+            <span class="product-likes-count"><i class="fa-solid fa-bullhorn"></i> انتشار خودکار</span>
+          </div>
+        </div>
       </a>
+
+      <a href="https://eitaa.com/amirmahdi_code" target="_blank" class="product-card">
+        <div class="product-image">
+          <img src="https://cdn.imgurl.ir/uploads/m87412_4b5310ee-fa5a-4d2e-a58c-a9337ddb4f92.png" alt="حمایت">
+        </div>
+        <div class="product-info">
+          <div class="product-name">حمایت از سازنده</div>
+          <div class="product-meta">کمک به توسعه</div>
+          <div class="product-like-row">
+            <span class="product-price">کلیک کنید</span>
+            <span class="product-likes-count"><i class="fa-solid fa-heart"></i> حمایت</span>
+          </div>
+        </div>
+      </a>
+
     </div>
 
     <div class="section-title">
@@ -307,10 +325,10 @@
 
     <div class="surveys-grid" id="surveysGrid">
       
-      <div class="survey-card active">
+      <div class="survey-card">
         <div class="survey-card-header">
           <span class="survey-card-title">نظرسنجی رضایت مشتریان — تابستان ۱۴۰۵</span>
-          <span class="survey-status status-active">● فعال</span>
+          <span class="survey-status">● فعال</span>
         </div>
         <div class="survey-card-meta">
           <span class="survey-meta-item"><i class="fa-solid fa-users"></i> ۱۲۷ پاسخ</span>
@@ -327,7 +345,7 @@
       <div class="survey-card">
         <div class="survey-card-header">
           <span class="survey-card-title">نظرسنجی انتخاب غذای هفتگی</span>
-          <span class="survey-status status-draft">پیش‌نویس</span>
+          <span class="survey-status">پیش‌نویس</span>
         </div>
         <div class="survey-card-meta">
           <span class="survey-meta-item"><i class="fa-solid fa-question-circle"></i> ۵ سوال</span>
@@ -340,10 +358,10 @@
         </div>
       </div>
 
-      <div class="survey-card ended">
+      <div class="survey-card">
         <div class="survey-card-header">
           <span class="survey-card-title">نظرسنجی بهترین همکار ماه</span>
-          <span class="survey-status status-ended">پایان‌یافته</span>
+          <span class="survey-status">پایان‌یافته</span>
         </div>
         <div class="survey-card-meta">
           <span class="survey-meta-item"><i class="fa-solid fa-users"></i> ۴۳ پاسخ</span>
@@ -378,14 +396,14 @@
       </div>
     </div>
     <div class="footer-links">
-      <a href="about/"><i class="fa-solid fa-circle-info"></i> درباره ما</a>
-      <a href="guide/"><i class="fa-solid fa-book"></i> راهنما</a>
-      <a href="contact/"><i class="fa-solid fa-phone"></i> ارتباط با ما</a>
+      <a href="../about/"><i class="fa-solid fa-circle-info"></i> درباره ما</a>
+      <a href="../guide/"><i class="fa-solid fa-book"></i> راهنما</a>
+      <a href="../contact/"><i class="fa-solid fa-phone"></i> ارتباط با ما</a>
     </div>
     <p class="footer-text">نظرسنجی‌ساز ایتا — کلیه حقوق محفوظ است</p>
   </footer>
 
-  <a href="support/" class="floating-support" title="پشتیبانی">
+  <a href="../support/" class="floating-support" title="پشتیبانی">
     <i class="fa-solid fa-headset"></i>
   </a>
 
