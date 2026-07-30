@@ -213,16 +213,19 @@
 
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
 
-    @media (max-width: 992px) { .products-grid { grid-template-columns: repeat(3, 1fr); gap: 12px; } .product-image { height: 100px; } }
     @media (max-width: 768px) {
       .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .product-image { height: 100px; }
       .surveys-grid { grid-template-columns: 1fr; }
       .header-title { font-size: 17px; }
       .search-filter-bar { flex-direction: column; }
       .floating-support { bottom: 16px; right: 16px; width: 48px; height: 48px; font-size: 20px; }
       .footer-stats { gap: 14px; }
     }
+
     @media (max-width: 400px) {
+      .product-image { height: 80px; font-size: 32px; }
+      .product-name { font-size: 11px; }
       .survey-card-actions { flex-wrap: wrap; }
       .btn-sm { font-size: 10px; padding: 5px 10px; }
     }
@@ -305,16 +308,16 @@
 
     <div class="section-title">
       <i class="fa-solid fa-list-check"></i> نظرسنجی‌های من
-      <span class="survey-count">(۳ نظرسنجی)</span>
+      <span class="survey-count" id="surveyCount">(۰ نظرسنجی)</span>
     </div>
 
     <div class="search-filter-bar">
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="searchInput" placeholder="جستجوی نظرسنجی...">
+        <input type="text" id="searchInput" placeholder="جستجوی نظرسنجی..." oninput="renderSurveys()">
       </div>
       <div class="filter-select">
-        <select id="filterSelect">
+        <select id="filterSelect" onchange="renderSurveys()">
           <option value="all">همه</option>
           <option value="active">فعال</option>
           <option value="draft">پیش‌نویس</option>
@@ -324,55 +327,7 @@
     </div>
 
     <div class="surveys-grid" id="surveysGrid">
-      
-      <div class="survey-card">
-        <div class="survey-card-header">
-          <span class="survey-card-title">نظرسنجی رضایت مشتریان — تابستان ۱۴۰۵</span>
-          <span class="survey-status">● فعال</span>
-        </div>
-        <div class="survey-card-meta">
-          <span class="survey-meta-item"><i class="fa-solid fa-users"></i> ۱۲۷ پاسخ</span>
-          <span class="survey-meta-item"><i class="fa-solid fa-clock"></i> ۵ روز تا پایان</span>
-          <span class="survey-meta-item"><i class="fa-solid fa-calendar"></i> ۱۲ تیر ۱۴۰۵</span>
-        </div>
-        <div class="survey-card-actions">
-          <button class="btn-sm btn-sm-outline"><i class="fa-solid fa-chart-bar"></i> نتایج</button>
-          <button class="btn-sm btn-sm-outline"><i class="fa-solid fa-share-alt"></i> اشتراک</button>
-          <button class="btn-sm btn-sm-ghost"><i class="fa-solid fa-pen"></i> ویرایش</button>
-        </div>
-      </div>
-
-      <div class="survey-card">
-        <div class="survey-card-header">
-          <span class="survey-card-title">نظرسنجی انتخاب غذای هفتگی</span>
-          <span class="survey-status">پیش‌نویس</span>
-        </div>
-        <div class="survey-card-meta">
-          <span class="survey-meta-item"><i class="fa-solid fa-question-circle"></i> ۵ سوال</span>
-          <span class="survey-meta-item"><i class="fa-solid fa-calendar"></i> ۱۵ تیر ۱۴۰۵</span>
-        </div>
-        <div class="survey-card-actions">
-          <button class="btn-sm btn-sm-primary"><i class="fa-solid fa-paper-plane"></i> انتشار</button>
-          <button class="btn-sm btn-sm-ghost"><i class="fa-solid fa-pen"></i> ویرایش</button>
-          <button class="btn-sm btn-sm-ghost" style="color:#e74c3c;"><i class="fa-solid fa-trash"></i></button>
-        </div>
-      </div>
-
-      <div class="survey-card">
-        <div class="survey-card-header">
-          <span class="survey-card-title">نظرسنجی بهترین همکار ماه</span>
-          <span class="survey-status">پایان‌یافته</span>
-        </div>
-        <div class="survey-card-meta">
-          <span class="survey-meta-item"><i class="fa-solid fa-users"></i> ۴۳ پاسخ</span>
-          <span class="survey-meta-item"><i class="fa-solid fa-calendar-check"></i> ۱ تیر ۱۴۰۵</span>
-        </div>
-        <div class="survey-card-actions">
-          <button class="btn-sm btn-sm-outline"><i class="fa-solid fa-chart-bar"></i> نتایج</button>
-          <button class="btn-sm btn-sm-ghost"><i class="fa-solid fa-copy"></i> کپی</button>
-        </div>
-      </div>
-
+      <div class="empty-state"><i class="fa-solid fa-spinner fa-spin"></i><p>در حال بارگذاری...</p></div>
     </div>
 
   </section>
@@ -382,17 +337,17 @@
       <div class="footer-stat">
         <i class="fa-solid fa-eye"></i>
         <small>بازدید</small>
-        <span>12,450</span>
+        <span id="footerVisits">0</span>
       </div>
       <div class="footer-stat">
         <i class="fa-solid fa-users"></i>
         <small>کاربران</small>
-        <span>3,842</span>
+        <span id="footerUsers">0</span>
       </div>
       <div class="footer-stat">
         <i class="fa-solid fa-square-poll-vertical"></i>
         <small>نظرسنجی فعال</small>
-        <span>127</span>
+        <span id="footerActive">0</span>
       </div>
     </div>
     <div class="footer-links">
@@ -406,6 +361,173 @@
   <a href="../support/" class="floating-support" title="پشتیبانی">
     <i class="fa-solid fa-headset"></i>
   </a>
+
+  <script>
+    const PUBLIC_API = 'https://script.google.com/macros/s/AKfycbxeMJGqx0ZKiLq1mXNVIY7qQMMT2kdgsmJBUc_QKLXRr6v3yj55mXTaimn9ADLzedKzfw/exec';
+    const PRIVATE_API = 'https://script.google.com/macros/s/AKfycbxNwRKWcYmAyQ33Jr_V1CxPwrsTpGmSswzuZVn0ENUz6RZ_NAD-1E6XCBaiKOqfnCM-XA/exec';
+
+    let allSurveys = [];
+    let currentUser = null;
+
+    function getInitData() {
+      if (window.Eitaa && window.Eitaa.WebApp) {
+        return window.Eitaa.WebApp.initData || '';
+      }
+      return '';
+    }
+
+    function getUserId() {
+      if (window.Eitaa && window.Eitaa.WebApp && window.Eitaa.WebApp.initDataUnsafe) {
+        return String(window.Eitaa.WebApp.initDataUnsafe.user?.id || '');
+      }
+      return '';
+    }
+
+    async function loadDashboard() {
+      const userId = getUserId();
+      currentUser = userId;
+
+      await Promise.all([
+        loadStats(),
+        loadSurveys()
+      ]);
+
+      trackView();
+    }
+
+    async function loadStats() {
+      try {
+        const res = await fetch(PUBLIC_API + '?action=getStats&id=all');
+        const data = await res.json();
+        if (data.seen) {
+          const count = data.seen.split(',').filter(e => e.trim()).length;
+          document.getElementById('footerVisits').textContent = count.toLocaleString('fa-IR');
+        }
+
+        const usersRes = await fetch(PUBLIC_API + '?action=getStats&id=users_count');
+        const usersData = await usersRes.json();
+        document.getElementById('footerUsers').textContent = (usersData.count || 0).toLocaleString('fa-IR');
+
+        const activeRes = await fetch(PUBLIC_API + '?action=getStats&id=active_count');
+        const activeData = await activeRes.json();
+        document.getElementById('footerActive').textContent = (activeData.count || 0).toLocaleString('fa-IR');
+
+      } catch (e) {
+        console.error('Stats load error:', e);
+      }
+    }
+
+    async function loadSurveys() {
+      const userId = currentUser;
+      if (!userId) {
+        document.getElementById('surveysGrid').innerHTML = '<div class="empty-state"><i class="fa-solid fa-circle-exclamation"></i><p>لطفاً از طریق ایتا وارد شوید</p></div>';
+        return;
+      }
+
+      try {
+        const res = await fetch(PUBLIC_API + '?action=getSurveys&user_id=' + userId);
+        const surveys = await res.json();
+
+        if (surveys.error) {
+          allSurveys = [];
+        } else {
+          allSurveys = Array.isArray(surveys) ? surveys : [];
+        }
+
+        document.getElementById('surveyCount').textContent = `(${allSurveys.length} نظرسنجی)`;
+        renderSurveys();
+
+      } catch (e) {
+        console.error('Surveys load error:', e);
+        allSurveys = [];
+        renderSurveys();
+      }
+    }
+
+    function renderSurveys() {
+      const grid = document.getElementById('surveysGrid');
+      const search = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+      const filter = document.getElementById('filterSelect')?.value || 'all';
+
+      let filtered = allSurveys;
+      if (search) {
+        filtered = filtered.filter(s => (s.title || '').toLowerCase().includes(search));
+      }
+      if (filter !== 'all') {
+        filtered = filtered.filter(s => (s.options || '') === filter);
+      }
+
+      if (allSurveys.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <i class="fa-solid fa-folder-open"></i>
+            <h3>هنوز نظرسنجی‌ای نساخته‌اید</h3>
+            <p>اولین نظرسنجی خود را بسازید و به اشتراک بگذارید</p>
+            <a href="../builder/" class="btn-create"><i class="fa-solid fa-plus"></i> ساخت فرم جدید</a>
+          </div>`;
+        return;
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-search"></i><p>نظرسنجی‌ای یافت نشد</p></div>';
+        return;
+      }
+
+      grid.innerHTML = filtered.map(s => {
+        const participants = s.participants ? s.participants.split(',').filter(p => p.trim()).length : 0;
+        const dateStr = s.date ? new Date(s.date).toLocaleDateString('fa-IR') : '—';
+        const statusText = (s.options === 'active') ? '● فعال' : (s.options === 'ended') ? 'پایان‌یافته' : 'پیش‌نویس';
+
+        return `
+          <div class="survey-card">
+            <div class="survey-card-header">
+              <span class="survey-card-title">${s.title || 'بدون عنوان'}</span>
+              <span class="survey-status">${statusText}</span>
+            </div>
+            <div class="survey-card-meta">
+              <span class="survey-meta-item"><i class="fa-solid fa-users"></i> ${participants} پاسخ</span>
+              <span class="survey-meta-item"><i class="fa-solid fa-calendar"></i> ${dateStr}</span>
+            </div>
+            <div class="survey-card-actions">
+              <button class="btn-sm btn-sm-outline" onclick="viewResults('${s.survey_id}')"><i class="fa-solid fa-chart-bar"></i> نتایج</button>
+              <button class="btn-sm btn-sm-outline" onclick="shareSurvey('${s.survey_id}')"><i class="fa-solid fa-share-alt"></i> اشتراک</button>
+              <button class="btn-sm btn-sm-ghost" onclick="editSurvey('${s.survey_id}')"><i class="fa-solid fa-pen"></i> ویرایش</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    async function trackView() {
+      const userId = currentUser;
+      if (!userId) return;
+
+      try {
+        const initData = getInitData();
+        await fetch(PRIVATE_API, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'trackView',
+            survey_id: 'all',
+            user_id: userId,
+            init_data: initData
+          })
+        });
+      } catch (e) {}
+    }
+
+    function viewResults(id) { window.location.href = '../results/?id=' + id; }
+    function shareSurvey(id) {
+      const link = 'https://eitaa.com/app/nazar_sanj?startapp=' + id;
+      if (navigator.share) {
+        navigator.share({ title: 'نظرسنجی', text: 'در این نظرسنجی شرکت کنید', url: link });
+      } else {
+        prompt('لینک نظرسنجی:', link);
+      }
+    }
+    function editSurvey(id) { window.location.href = '../builder/?id=' + id; }
+
+    loadDashboard();
+  </script>
 
 </body>
 </html>
