@@ -18,6 +18,7 @@
       --shadow: 0 2px 12px rgba(0,0,0,0.04); --shadow-hover: 0 8px 24px rgba(0,0,0,0.08);
       --header-bg: #ffffff; --footer-bg: #fef9f3;
       --overlay: rgba(249, 115, 22, 0.08);
+      --logo-bg: #fef9f3;
     }
 
     [data-theme="dark"] {
@@ -28,6 +29,7 @@
       --shadow: 0 2px 12px rgba(0,0,0,0.3); --shadow-hover: 0 8px 24px rgba(0,0,0,0.5);
       --header-bg: #1e293b; --footer-bg: #1e293b;
       --overlay: rgba(249, 115, 22, 0.12);
+      --logo-bg: #1e293b;
     }
 
     body {
@@ -51,11 +53,14 @@
 
     .header-logo {
       width: 42px; height: 42px; border-radius: 12px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      background: var(--logo-bg);
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 3px 12px rgba(var(--primary-rgb), 0.25);
+      box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.15);
       font-size: 20px; color: #fff; flex-shrink: 0;
+      padding: 4px;
     }
+
+    .header-logo img { width: 100%; height: 100%; object-fit: contain; }
 
     .header-title { font-size: 20px; font-weight: 700; color: var(--dark); transition: color 0.3s; }
     .header-subtitle { font-size: 10px; color: var(--text-light); transition: color 0.3s; }
@@ -247,7 +252,7 @@
     <div class="header-inner">
       <div class="header-right">
         <div class="header-logo">
-          <i class="fa-solid fa-square-poll-vertical"></i>
+          <img src="https://cdn.imgurl.ir/uploads/a857029_InShot_20260730_155344354.png" alt="نظرسنجی‌ساز">
         </div>
         <div>
           <div class="header-title">نظرسنجی‌ساز</div>
