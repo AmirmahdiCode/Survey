@@ -65,26 +65,6 @@
     .header-title { font-size: 20px; font-weight: 700; color: var(--dark); transition: color 0.3s; }
     .header-subtitle { font-size: 10px; color: var(--text-light); transition: color 0.3s; }
 
-    .header-btns { display: flex; align-items: center; gap: 8px; }
-
-    .btn-profile {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 13px; font-weight: 600; color: var(--primary-dark); text-decoration: none;
-      padding: 6px 12px; border-radius: 10px; border: 1.5px solid var(--primary-light);
-      transition: all 0.3s ease; white-space: nowrap;
-    }
-
-    .btn-profile:hover { background: var(--overlay); }
-
-    .btn-profile-avatar {
-      width: 30px; height: 30px; border-radius: 50%; object-fit: cover;
-      background: var(--overlay); flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px; color: var(--primary);
-    }
-
-    .btn-profile-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-
     .main-container { flex: 1; max-width: 700px; width: 100%; margin: 0 auto; padding: 20px 16px; }
 
     .loader-wrapper { display: flex; align-items: center; justify-content: center; min-height: 50vh; }
@@ -256,12 +236,6 @@
             <div class="header-subtitle">پروفایل کاربری</div>
           </div>
         </a>
-      </div>
-      <div class="header-btns">
-        <div class="btn-profile" id="btnProfileHeader">
-          <span class="btn-profile-avatar" id="profileAvatarHeader"><i class="fa-solid fa-user"></i></span>
-          <span id="profileNameHeader">حساب کاربری</span>
-        </div>
       </div>
     </div>
   </header>
@@ -477,7 +451,6 @@
       window._selectAvatar = function(icon) {
         currentAvatar = icon;
         document.getElementById('avatarCircle').innerHTML = '<i class="fa-solid ' + icon + '"></i>';
-        document.getElementById('profileAvatarHeader').innerHTML = '<i class="fa-solid ' + icon + '"></i>';
         renderIconGrid();
         saveAvatar(icon);
       };
@@ -508,7 +481,6 @@
 
         var fullName = (getFirstName() + ' ' + getLastName()).trim() || 'کاربر';
         document.getElementById('profileName').textContent = fullName;
-        document.getElementById('profileNameHeader').textContent = fullName;
         document.getElementById('profileId').textContent = 'ID: ' + userId;
 
         var userData = await safeFetch(PUBLIC_API + '?action=getUser&id=' + userId);
@@ -531,7 +503,6 @@
         }
 
         document.getElementById('avatarCircle').innerHTML = '<i class="fa-solid ' + currentAvatar + '"></i>';
-        document.getElementById('profileAvatarHeader').innerHTML = '<i class="fa-solid ' + currentAvatar + '"></i>';
 
         var surveyCount = 0;
         var totalResponses = 0;
