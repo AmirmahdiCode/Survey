@@ -36,6 +36,7 @@
       font-family: 'Vazir', 'Segoe UI', Tahoma, sans-serif;
       background: var(--bg); color: var(--text); min-height: 100vh;
       transition: all 0.3s ease;
+      display: flex; flex-direction: column;
     }
 
     .header {
@@ -56,7 +57,6 @@
       background: var(--logo-bg);
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.15);
-      font-size: 20px; color: #fff; flex-shrink: 0;
       padding: 4px;
     }
 
@@ -65,7 +65,46 @@
     .header-title { font-size: 20px; font-weight: 700; color: var(--dark); transition: color 0.3s; }
     .header-subtitle { font-size: 10px; color: var(--text-light); transition: color 0.3s; }
 
-    .main-container { max-width: 700px; margin: 0 auto; padding: 20px 16px; }
+    .header-btns { display: flex; align-items: center; gap: 8px; }
+
+    .btn-profile {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 600; color: var(--primary-dark); text-decoration: none;
+      padding: 6px 12px; border-radius: 10px; border: 1.5px solid var(--primary-light);
+      transition: all 0.3s ease; white-space: nowrap;
+    }
+
+    .btn-profile:hover { background: var(--overlay); }
+
+    .btn-profile-avatar {
+      width: 30px; height: 30px; border-radius: 50%; object-fit: cover;
+      background: var(--overlay); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: var(--primary);
+    }
+
+    .btn-profile-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+    .main-container { flex: 1; max-width: 700px; width: 100%; margin: 0 auto; padding: 20px 16px; }
+
+    .loader-wrapper { display: flex; align-items: center; justify-content: center; min-height: 50vh; }
+
+    .loader {
+      width: 48px; height: 48px; border: 4px solid var(--bg3);
+      border-top-color: var(--primary); border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-state { display: none; text-align: center; padding: 60px 20px; color: var(--text-light); }
+    .error-state i { font-size: 52px; display: block; margin-bottom: 16px; opacity: 0.6; }
+    .error-state h3 { font-size: 16px; color: var(--dark); margin-bottom: 8px; }
+    .error-state p { font-size: 12px; }
+
+    .profile-content { display: none; }
+    .profile-content.loaded { display: block; }
+    .error-state.loaded { display: block; }
 
     .profile-header { text-align: center; margin-bottom: 24px; }
 
@@ -173,6 +212,19 @@
       font-size: 13px; cursor: pointer; font-family: inherit;
     }
 
+    .footer { text-align: center; padding: 16px 20px; background: var(--footer-bg); border-top: 1px solid var(--bg3); transition: all 0.3s ease; }
+
+    .footer-stats { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
+    .footer-stat { display: flex; align-items: center; gap: 6px; }
+    .footer-stat i { font-size: 14px; color: var(--primary); }
+    .footer-stat span { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .footer-stat small { font-size: 10px; color: var(--text-light); margin-right: 2px; }
+
+    .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+    .footer-links a { color: var(--primary-dark); font-size: 11px; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--dark); }
+    .footer-text { font-size: 10px; color: var(--text-light); transition: color 0.3s; }
+
     @media (max-width: 768px) {
       .icons-grid { grid-template-columns: repeat(6, 1fr); }
       .header-title { font-size: 17px; }
@@ -205,53 +257,97 @@
           </div>
         </a>
       </div>
+      <div class="header-btns">
+        <div class="btn-profile" id="btnProfileHeader">
+          <span class="btn-profile-avatar" id="profileAvatarHeader"><i class="fa-solid fa-user"></i></span>
+          <span id="profileNameHeader">حساب کاربری</span>
+        </div>
+      </div>
     </div>
   </header>
 
   <section class="main-container">
+    <div class="loader-wrapper" id="loaderWrapper">
+      <div class="loader"></div>
+    </div>
 
-    <div class="profile-header">
-      <div class="avatar-wrapper" id="avatarWrapper" onclick="openAvatarModal()">
-        <div class="avatar-circle" id="avatarCircle">
-          <i class="fa-solid fa-user"></i>
+    <div class="error-state" id="errorState">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <h3>لطفاً از طریق ایتا وارد شوید</h3>
+      <p>این صفحه فقط در محیط برنامک ایتا قابل دسترسی است</p>
+    </div>
+
+    <div class="profile-content" id="profileContent">
+
+      <div class="profile-header">
+        <div class="avatar-wrapper" onclick="openAvatarModal()">
+          <div class="avatar-circle" id="avatarCircle">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="avatar-edit-badge">
+            <i class="fa-solid fa-pen"></i>
+          </div>
         </div>
-        <div class="avatar-edit-badge">
-          <i class="fa-solid fa-pen"></i>
+        <div class="profile-name" id="profileName">کاربر</div>
+        <div class="profile-id" id="profileId">—</div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <i class="fa-solid fa-square-poll-vertical"></i>
+          <div class="stat-value" id="statSurveys">—</div>
+          <div class="stat-label">نظرسنجی</div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-users"></i>
+          <div class="stat-value" id="statResponses">—</div>
+          <div class="stat-label">پاسخ</div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-calendar"></i>
+          <div class="stat-value" id="statMember">—</div>
+          <div class="stat-label">عضویت</div>
         </div>
       </div>
-      <div class="profile-name" id="profileName">کاربر</div>
-      <div class="profile-id" id="profileId">—</div>
-    </div>
 
-    <div class="stats-row">
-      <div class="stat-card">
-        <i class="fa-solid fa-square-poll-vertical"></i>
-        <div class="stat-value" id="statSurveys">—</div>
-        <div class="stat-label">نظرسنجی</div>
+      <div class="section-title"><i class="fa-solid fa-link"></i> کانال‌های متصل</div>
+      <div class="channels-list" id="channelsList">
+        <div class="no-channels">در حال بارگذاری...</div>
       </div>
-      <div class="stat-card">
-        <i class="fa-solid fa-users"></i>
-        <div class="stat-value" id="statResponses">—</div>
-        <div class="stat-label">پاسخ</div>
+
+      <div class="btn-row">
+        <a href="../dashboard/" class="btn btn-outline"><i class="fa-solid fa-arrow-right"></i> بازگشت به داشبورد</a>
+        <button class="btn btn-danger" onclick="closeApp()"><i class="fa-solid fa-right-from-bracket"></i> خروج</button>
       </div>
-      <div class="stat-card">
-        <i class="fa-solid fa-calendar"></i>
-        <div class="stat-value" id="statMember">—</div>
-        <div class="stat-label">عضویت</div>
-      </div>
-    </div>
 
-    <div class="section-title"><i class="fa-solid fa-link"></i> کانال‌های متصل</div>
-    <div class="channels-list" id="channelsList">
-      <div class="no-channels">در حال بارگذاری...</div>
     </div>
-
-    <div class="btn-row">
-      <a href="../dashboard/" class="btn btn-outline"><i class="fa-solid fa-arrow-right"></i> بازگشت به داشبورد</a>
-      <button class="btn btn-danger" onclick="closeApp()"><i class="fa-solid fa-right-from-bracket"></i> خروج</button>
-    </div>
-
   </section>
+
+  <footer class="footer">
+    <div class="footer-stats">
+      <div class="footer-stat">
+        <i class="fa-solid fa-eye"></i>
+        <small>بازدید</small>
+        <span id="footerVisits">—</span>
+      </div>
+      <div class="footer-stat">
+        <i class="fa-solid fa-users"></i>
+        <small>کاربران</small>
+        <span id="footerUsers">—</span>
+      </div>
+      <div class="footer-stat">
+        <i class="fa-solid fa-square-poll-vertical"></i>
+        <small>نظرسنجی فعال</small>
+        <span id="footerActive">—</span>
+      </div>
+    </div>
+    <div class="footer-links">
+      <a href="../about/"><i class="fa-solid fa-circle-info"></i> درباره ما</a>
+      <a href="../guide/"><i class="fa-solid fa-book"></i> راهنما</a>
+      <a href="../contact/"><i class="fa-solid fa-phone"></i> ارتباط با ما</a>
+    </div>
+    <p class="footer-text">نظرسنجی‌ساز ایتا — کلیه حقوق محفوظ است</p>
+  </footer>
 
   <div class="modal-overlay" id="avatarModal" onclick="closeAvatarModal(event)">
     <div class="modal-box" onclick="event.stopPropagation()">
@@ -381,6 +477,7 @@
       window._selectAvatar = function(icon) {
         currentAvatar = icon;
         document.getElementById('avatarCircle').innerHTML = '<i class="fa-solid ' + icon + '"></i>';
+        document.getElementById('profileAvatarHeader').innerHTML = '<i class="fa-solid ' + icon + '"></i>';
         renderIconGrid();
         saveAvatar(icon);
       };
@@ -400,24 +497,25 @@
         });
       }
 
-      async function loadProfile() {
+      async function loadAllData() {
         var userId = getUserId();
         currentUser = userId;
 
         if (!userId) {
-          document.getElementById('profileName').textContent = '—';
-          document.getElementById('profileId').textContent = '—';
+          showError();
           return;
         }
 
+        var fullName = (getFirstName() + ' ' + getLastName()).trim() || 'کاربر';
+        document.getElementById('profileName').textContent = fullName;
+        document.getElementById('profileNameHeader').textContent = fullName;
         document.getElementById('profileId').textContent = 'ID: ' + userId;
 
-        var firstName = getFirstName();
-        var lastName = getLastName();
-        var fullName = (firstName + ' ' + lastName).trim() || 'کاربر';
-        document.getElementById('profileName').textContent = fullName;
-
         var userData = await safeFetch(PUBLIC_API + '?action=getUser&id=' + userId);
+        var surveys = await safeFetch(PUBLIC_API + '?action=getSurveys&user_id=' + userId);
+        var statsAll = await safeFetch(PUBLIC_API + '?action=getStats&id=all');
+        var usersCount = await safeFetch(PUBLIC_API + '?action=getUsersCount');
+        var activeCount = await safeFetch(PUBLIC_API + '?action=getActiveSurveysCount');
 
         if (userData && !userData.error) {
           if (userData.avatar && iconList.indexOf(userData.avatar) !== -1) {
@@ -433,30 +531,10 @@
         }
 
         document.getElementById('avatarCircle').innerHTML = '<i class="fa-solid ' + currentAvatar + '"></i>';
-      }
+        document.getElementById('profileAvatarHeader').innerHTML = '<i class="fa-solid ' + currentAvatar + '"></i>';
 
-      function renderChannels(channelsStr) {
-        var list = document.getElementById('channelsList');
-        var channels = channelsStr ? channelsStr.split(',').filter(function(c) { return c.trim(); }) : [];
-
-        if (channels.length === 0) {
-          list.innerHTML = '<div class="no-channels"><i class="fa-solid fa-link-slash"></i> کانالی متصل نشده است</div>';
-          return;
-        }
-
-        list.innerHTML = channels.map(function(ch) {
-          return '<div class="channel-item"><i class="fa-solid fa-bullhorn"></i><span>' + ch.trim() + '</span><span class="channel-badge">متصل</span></div>';
-        }).join('');
-      }
-
-      async function loadStats() {
-        var userId = currentUser;
-        if (!userId) return;
-
-        var surveys = await safeFetch(PUBLIC_API + '?action=getSurveys&user_id=' + userId);
         var surveyCount = 0;
         var totalResponses = 0;
-
         if (surveys && !surveys.error && Array.isArray(surveys)) {
           allSurveysData = surveys;
           surveyCount = surveys.length;
@@ -465,17 +543,50 @@
             totalResponses += p;
           });
         }
-
         document.getElementById('statSurveys').textContent = surveyCount.toLocaleString('fa-IR');
         document.getElementById('statResponses').textContent = totalResponses.toLocaleString('fa-IR');
         document.getElementById('statMember').textContent = 'امروز';
+
+        if (statsAll && statsAll.seen) {
+          var entries = statsAll.seen.split(',').filter(function(e) { return e.trim(); });
+          document.getElementById('footerVisits').textContent = entries.length.toLocaleString('fa-IR');
+        }
+        if (usersCount && typeof usersCount.count === 'number') {
+          document.getElementById('footerUsers').textContent = usersCount.count.toLocaleString('fa-IR');
+        }
+        if (activeCount && typeof activeCount.count === 'number') {
+          document.getElementById('footerActive').textContent = activeCount.count.toLocaleString('fa-IR');
+        }
+
+        showContent();
+      }
+
+      function renderChannels(channelsStr) {
+        var list = document.getElementById('channelsList');
+        var channels = channelsStr ? channelsStr.split(',').filter(function(c) { return c.trim(); }) : [];
+        if (channels.length === 0) {
+          list.innerHTML = '<div class="no-channels"><i class="fa-solid fa-link-slash"></i> کانالی متصل نشده است</div>';
+          return;
+        }
+        list.innerHTML = channels.map(function(ch) {
+          return '<div class="channel-item"><i class="fa-solid fa-bullhorn"></i><span>' + ch.trim() + '</span><span class="channel-badge">متصل</span></div>';
+        }).join('');
+      }
+
+      function showContent() {
+        document.getElementById('loaderWrapper').style.display = 'none';
+        document.getElementById('profileContent').classList.add('loaded');
+      }
+
+      function showError() {
+        document.getElementById('loaderWrapper').style.display = 'none';
+        document.getElementById('errorState').classList.add('loaded');
       }
 
       initTheme();
       initBackButton();
       ready();
-      loadProfile();
-      loadStats();
+      loadAllData();
     })();
   </script>
 
