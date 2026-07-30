@@ -387,7 +387,6 @@
 
       var allSurveys = [];
       var currentUser = null;
-      var navigationStack = [];
 
       function initTheme() {
         if (window.Eitaa && window.Eitaa.WebApp) {
@@ -410,25 +409,10 @@
 
       function initBackButton() {
         if (window.Eitaa && window.Eitaa.WebApp) {
-          window.Eitaa.WebApp.BackButton.hide();
+          window.Eitaa.WebApp.BackButton.show();
           window.Eitaa.WebApp.BackButton.onClick(function() {
-            if (navigationStack.length > 0) {
-              var prev = navigationStack.pop();
-              window.location.href = prev;
-            } else {
-              window.Eitaa.WebApp.close();
-            }
+            window.Eitaa.WebApp.close();
           });
-        }
-      }
-
-      function updateBackButton() {
-        if (window.Eitaa && window.Eitaa.WebApp) {
-          if (navigationStack.length > 0) {
-            window.Eitaa.WebApp.BackButton.show();
-          } else {
-            window.Eitaa.WebApp.BackButton.hide();
-          }
         }
       }
 
@@ -611,7 +595,6 @@
 
       initTheme();
       initBackButton();
-      updateBackButton();
       ready();
       loadDashboard();
     })();
