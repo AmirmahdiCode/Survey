@@ -76,16 +76,26 @@
 
     .btn-back:hover { background: var(--overlay); }
 
-    .btn-exit {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 13px; font-weight: 600; color: #e74c3c; text-decoration: none;
-      padding: 8px 14px; border-radius: 10px; border: 1.5px solid rgba(231,76,60,0.3);
-      transition: all 0.3s ease; white-space: nowrap; background: none; cursor: pointer; font-family: inherit;
+    .main-container { flex: 1; max-width: 700px; width: 100%; margin: 0 auto; padding: 20px 16px; }
+
+    .loader-wrapper { display: flex; align-items: center; justify-content: center; min-height: 50vh; }
+
+    .loader {
+      width: 48px; height: 48px; border: 4px solid var(--bg3);
+      border-top-color: var(--primary); border-radius: 50%;
+      animation: spin 0.8s linear infinite;
     }
 
-    .btn-exit:hover { background: rgba(231,76,60,0.06); }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .main-container { flex: 1; max-width: 700px; width: 100%; margin: 0 auto; padding: 20px 16px; }
+    .error-state { display: none; text-align: center; padding: 60px 20px; color: var(--text-light); }
+    .error-state i { font-size: 52px; display: block; margin-bottom: 16px; opacity: 0.6; }
+    .error-state h3 { font-size: 16px; color: var(--dark); margin-bottom: 8px; }
+    .error-state p { font-size: 12px; }
+
+    .profile-content { display: none; }
+    .profile-content.loaded { display: block; }
+    .error-state.loaded { display: block; }
 
     .profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
 
@@ -227,51 +237,62 @@
       </div>
       <div class="header-btns">
         <a href="../dashboard/" class="btn-back"><i class="fa-solid fa-arrow-right"></i> بازگشت</a>
-        <button class="btn-exit" onclick="closeApp()"><i class="fa-solid fa-right-from-bracket"></i> خروج</button>
       </div>
     </div>
   </header>
 
   <section class="main-container">
+    <div class="loader-wrapper" id="loaderWrapper">
+      <div class="loader"></div>
+    </div>
 
-    <div class="profile-header">
-      <div class="avatar-wrapper" onclick="openAvatarModal()">
-        <div class="avatar-circle" id="avatarCircle">
-          <i class="fa-solid fa-user"></i>
+    <div class="error-state" id="errorState">
+      <i class="fa-solid fa-circle-exclamation"></i>
+      <h3>لطفاً از طریق ایتا وارد شوید</h3>
+      <p>این صفحه فقط در محیط برنامک ایتا قابل دسترسی است</p>
+    </div>
+
+    <div class="profile-content" id="profileContent">
+
+      <div class="profile-header">
+        <div class="avatar-wrapper" onclick="openAvatarModal()">
+          <div class="avatar-circle" id="avatarCircle">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="avatar-edit-badge">
+            <i class="fa-solid fa-pen"></i>
+          </div>
         </div>
-        <div class="avatar-edit-badge">
-          <i class="fa-solid fa-pen"></i>
+        <div class="profile-info">
+          <div class="profile-name" id="profileName">کاربر</div>
+          <div class="profile-id" id="profileId">—</div>
         </div>
       </div>
-      <div class="profile-info">
-        <div class="profile-name" id="profileName">کاربر</div>
-        <div class="profile-id" id="profileId">—</div>
-      </div>
-    </div>
 
-    <div class="stats-row">
-      <div class="stat-card">
-        <i class="fa-solid fa-square-poll-vertical"></i>
-        <div class="stat-value" id="statSurveys">—</div>
-        <div class="stat-label">نظرسنجی</div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <i class="fa-solid fa-square-poll-vertical"></i>
+          <div class="stat-value" id="statSurveys">—</div>
+          <div class="stat-label">نظرسنجی</div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-users"></i>
+          <div class="stat-value" id="statResponses">—</div>
+          <div class="stat-label">پاسخ</div>
+        </div>
+        <div class="stat-card">
+          <i class="fa-solid fa-calendar"></i>
+          <div class="stat-value" id="statMember">—</div>
+          <div class="stat-label">عضویت</div>
+        </div>
       </div>
-      <div class="stat-card">
-        <i class="fa-solid fa-users"></i>
-        <div class="stat-value" id="statResponses">—</div>
-        <div class="stat-label">پاسخ</div>
-      </div>
-      <div class="stat-card">
-        <i class="fa-solid fa-calendar"></i>
-        <div class="stat-value" id="statMember">—</div>
-        <div class="stat-label">عضویت</div>
-      </div>
-    </div>
 
-    <div class="section-title"><i class="fa-solid fa-link"></i> کانال‌های متصل</div>
-    <div class="channels-list" id="channelsList">
-      <div class="no-channels"><i class="fa-solid fa-link-slash"></i> کانالی متصل نشده است</div>
-    </div>
+      <div class="section-title"><i class="fa-solid fa-link"></i> کانال‌های متصل</div>
+      <div class="channels-list" id="channelsList">
+        <div class="no-channels">در حال بارگذاری...</div>
+      </div>
 
+    </div>
   </section>
 
   <footer class="footer">
@@ -364,14 +385,6 @@
         }
       }
 
-      function closeApp() {
-        if (window.Eitaa && window.Eitaa.WebApp) {
-          window.Eitaa.WebApp.close();
-        } else {
-          window.location.href = '../dashboard/';
-        }
-      }
-
       function safeFetch(url, options) {
         return fetch(url, options).then(function(r) {
           if (!r.ok) return null;
@@ -392,14 +405,14 @@
         if (window.Eitaa && window.Eitaa.WebApp && window.Eitaa.WebApp.initDataUnsafe) {
           return String(window.Eitaa.WebApp.initDataUnsafe.user && window.Eitaa.WebApp.initDataUnsafe.user.id || '');
         }
-        return 'demo_user';
+        return '';
       }
 
       function getFirstName() {
         if (window.Eitaa && window.Eitaa.WebApp && window.Eitaa.WebApp.initDataUnsafe) {
           return window.Eitaa.WebApp.initDataUnsafe.user && window.Eitaa.WebApp.initDataUnsafe.user.first_name || '';
         }
-        return 'کاربر';
+        return '';
       }
 
       function getLastName() {
@@ -453,6 +466,11 @@
         var userId = getUserId();
         currentUser = userId;
 
+        if (!userId) {
+          showError();
+          return;
+        }
+
         var fullName = (getFirstName() + ' ' + getLastName()).trim() || 'کاربر';
         document.getElementById('profileName').textContent = fullName;
         document.getElementById('profileId').textContent = 'ID: ' + userId;
@@ -500,6 +518,8 @@
         if (activeCount && typeof activeCount.count === 'number') {
           document.getElementById('footerActive').textContent = activeCount.count.toLocaleString('fa-IR');
         }
+
+        showContent();
       }
 
       function renderChannels(channelsStr) {
@@ -512,6 +532,16 @@
         list.innerHTML = channels.map(function(ch) {
           return '<div class="channel-item"><i class="fa-solid fa-bullhorn"></i><span>' + ch.trim() + '</span><span class="channel-badge">متصل</span></div>';
         }).join('');
+      }
+
+      function showContent() {
+        document.getElementById('loaderWrapper').style.display = 'none';
+        document.getElementById('profileContent').classList.add('loaded');
+      }
+
+      function showError() {
+        document.getElementById('loaderWrapper').style.display = 'none';
+        document.getElementById('errorState').classList.add('loaded');
       }
 
       initTheme();
