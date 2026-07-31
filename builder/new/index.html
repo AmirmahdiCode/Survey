@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظرسنجی‌ساز | ساخت فرم جدید</title>
+  <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #f97316; --primary-dark: #ea580c; --primary-light: #fdba74; --primary-rgb: 249, 115, 22;
+      --bg: #ffffff; --bg2: #fef9f3; --bg3: #f5efe6;
+      --dark: #0f172a; --text: #334155; --text-light: #94a3b8; --white: #ffffff;
+      --card-bg: #ffffff; --card-border: #f0e8db;
+      --shadow: 0 2px 12px rgba(0,0,0,0.04); --shadow-hover: 0 8px 24px rgba(0,0,0,0.08);
+      --header-bg: #ffffff; --footer-bg: #fef9f3;
+      --overlay: rgba(249, 115, 22, 0.08); --red: #e74c3c;
+      --logo-bg: #fef9f3;
+    }
+
+    [data-theme="dark"] {
+      --primary: #f97316; --primary-dark: #ea580c; --primary-light: #fdba74; --primary-rgb: 249, 115, 22;
+      --bg: #0f172a; --bg2: #1e293b; --bg3: #334155;
+      --dark: #e2e8f0; --text: #cbd5e1; --text-light: #64748b; --white: #1e293b;
+      --card-bg: #1e293b; --card-border: #334155;
+      --shadow: 0 2px 12px rgba(0,0,0,0.3); --shadow-hover: 0 8px 24px rgba(0,0,0,0.5);
+      --header-bg: #1e293b; --footer-bg: #1e293b;
+      --overlay: rgba(249, 115, 22, 0.12);
+      --logo-bg: #1e293b;
+    }
+
+    body {
+      font-family: 'Vazir', 'Segoe UI', Tahoma, sans-serif;
+      background: var(--bg); color: var(--text); min-height: 100vh;
+      transition: all 0.3s ease; display: flex; flex-direction: column;
+    }
+
+    .header {
+      background: var(--header-bg); box-shadow: 0 1px 8px rgba(0,0,0,0.03);
+      padding: 14px 20px; position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--bg3); transition: all 0.3s ease;
+    }
+
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; max-width: 1100px; margin: 0 auto;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 10px; }
+
+    .header-logo {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: var(--logo-bg); display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.15); padding: 4px;
+    }
+
+    .header-logo img { width: 100%; height: 100%; object-fit: contain; }
+    .header-title { font-size: 20px; font-weight: 700; color: var(--dark); transition: color 0.3s; }
+    .header-subtitle { font-size: 10px; color: var(--text-light); transition: color 0.3s; }
+
+    .header-btns { display: flex; align-items: center; gap: 8px; }
+
+    .btn-back {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 600; color: var(--primary-dark); text-decoration: none;
+      padding: 8px 14px; border-radius: 10px; border: 1.5px solid var(--primary-light);
+      transition: all 0.3s ease; white-space: nowrap;
+    }
+
+    .btn-back:hover { background: var(--overlay); }
+
+    .main-container { flex: 1; max-width: 700px; width: 100%; margin: 0 auto; padding: 20px 16px; }
+
+    .form-section { margin-bottom: 24px; }
+
+    .section-title {
+      font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px; transition: color 0.3s;
+    }
+
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--bg3); transition: background 0.3s; }
+
+    label {
+      display: block; font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 6px;
+    }
+
+    input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea, select {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--card-border);
+      border-radius: 10px; font-size: 13px; color: var(--dark); background: var(--card-bg);
+      outline: none; font-family: inherit; transition: all 0.3s; margin-bottom: 12px;
+    }
+
+    input:focus, textarea:focus, select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1); }
+    textarea { resize: vertical; min-height: 80px; }
+
+    .hint { font-size: 10px; color: var(--text-light); margin-top: -8px; margin-bottom: 12px; }
+
+    .img-upload-row { display: flex; gap: 8px; }
+    .img-upload-row input { flex: 1; }
+    .img-upload-row .btn-upload {
+      padding: 10px 14px; background: var(--primary); color: #fff; border: none;
+      border-radius: 10px; font-size: 12px; font-weight: 600; cursor: pointer;
+      font-family: inherit; white-space: nowrap; transition: all 0.3s; margin-bottom: 12px;
+      display: flex; align-items: center; gap: 6px; text-decoration: none;
+    }
+
+    .img-upload-row .btn-upload:hover { background: var(--primary-dark); }
+
+    .img-preview { width: 100%; max-height: 160px; object-fit: contain; border-radius: 10px; margin-bottom: 12px; display: none; }
+
+    .option-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .option-row input { flex: 1; margin-bottom: 0; }
+    .btn-del-option {
+      width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(231,76,60,0.3);
+      background: transparent; color: #e74c3c; cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; justify-content: center; transition: all 0.3s; flex-shrink: 0;
+    }
+
+    .btn-del-option:hover { background: rgba(231,76,60,0.08); }
+
+    .btn-add-option {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px; background: var(--overlay); color: var(--primary);
+      border: 1px dashed var(--primary-light); border-radius: 10px;
+      font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit;
+      transition: all 0.3s; margin-bottom: 12px;
+    }
+
+    .btn-add-option:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .inline-row { display: flex; gap: 10px; align-items: center; }
+    .inline-row select { flex: 1; margin-bottom: 0; }
+    .inline-row input { flex: 1; margin-bottom: 0; }
+
+    .channels-check-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+
+    .channel-check {
+      display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px;
+      cursor: pointer; transition: all 0.3s; font-size: 12px;
+    }
+
+    .channel-check:hover { border-color: var(--primary-light); }
+    .channel-check input[type="checkbox"] { accent-color: var(--primary); width: 16px; height: 16px; cursor: pointer; }
+
+    .btn-row { display: flex; gap: 10px; justify-content: center; margin-top: 24px; }
+
+    .btn {
+      padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: all 0.3s ease; border: none;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .btn-draft { background: transparent; color: var(--primary); border: 1.5px solid var(--primary-light); }
+    .btn-draft:hover { background: var(--overlay); }
+    .btn-publish { background: var(--primary); color: #fff; }
+    .btn-publish:hover { background: var(--primary-dark); }
+
+    .footer { text-align: center; padding: 16px 20px; background: var(--footer-bg); border-top: 1px solid var(--bg3); transition: all 0.3s ease; }
+
+    .footer-stats { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
+    .footer-stat { display: flex; align-items: center; gap: 6px; }
+    .footer-stat i { font-size: 14px; color: var(--primary); }
+    .footer-stat span { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .footer-stat small { font-size: 10px; color: var(--text-light); margin-right: 2px; }
+
+    .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
+    .footer-links a { color: var(--primary-dark); font-size: 11px; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: color 0.3s; }
+    .footer-links a:hover { color: var(--dark); }
+    .footer-text { font-size: 10px; color: var(--text-light); transition: color 0.3s; }
+
+    @media (max-width: 768px) {
+      .header-title { font-size: 17px; }
+      .btn-row { flex-direction: column; }
+      .btn { justify-content: center; }
+      .inline-row { flex-direction: column; gap: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-right">
+        <a href="../../dashboard/" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
+          <div class="header-logo">
+            <img src="https://cdn.imgurl.ir/uploads/a857029_InShot_20260730_155344354.png" alt="نظرسنجی‌ساز">
+          </div>
+          <div>
+            <div class="header-title">نظرسنجی‌ساز</div>
+            <div class="header-subtitle">ساخت فرم جدید</div>
+          </div>
+        </a>
+      </div>
+      <div class="header-btns">
+        <a href="../../dashboard/" class="btn-back"><i class="fa-solid fa-arrow-right"></i> بازگشت</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="main-container">
+
+    <div class="form-section">
+      <div class="section-title"><i class="fa-solid fa-heading"></i> عنوان</div>
+      <input type="text" id="surveyTitle" placeholder="حداکثر ۲ کلمه" maxlength="50">
+      <div class="hint">حداکثر ۲ کلمه مجاز است</div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><i class="fa-solid fa-align-left"></i> توضیح</div>
+      <textarea id="surveyExplanation" placeholder="متن کامل نظرسنجی..."></textarea>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><i class="fa-solid fa-image"></i> تصویر</div>
+      <div class="img-upload-row">
+        <input type="text" id="surveyImage" placeholder="لینک تصویر را وارد کنید..." oninput="previewImage()">
+        <a href="https://imgurl.ir/" target="_blank" class="btn-upload"><i class="fa-solid fa-cloud-upload-alt"></i> آپلود</a>
+      </div>
+      <img id="imgPreview" class="img-preview" alt="پیش‌نمایش">
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><i class="fa-solid fa-list-ul"></i> گزینه‌ها <span style="font-size:10px;color:var(--text-light);">(۲ تا ۱۰ گزینه)</span></div>
+      <div id="optionsContainer">
+        <div class="option-row"><input type="text" class="option-input" placeholder="گزینه ۱"><button class="btn-del-option" onclick="removeOption(this)" disabled><i class="fa-solid fa-times"></i></button></div>
+        <div class="option-row"><input type="text" class="option-input" placeholder="گزینه ۲"><button class="btn-del-option" onclick="removeOption(this)" disabled><i class="fa-solid fa-times"></i></button></div>
+      </div>
+      <button class="btn-add-option" id="btnAddOption" onclick="addOption()"><i class="fa-solid fa-plus"></i> افزودن گزینه</button>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><i class="fa-solid fa-eye"></i> نوع نمایش</div>
+      <select id="surveyType">
+        <option value="public">عمومی (نمایش اسامی رأی‌دهندگان)</option>
+        <option value="anonymous">ناشناس (عدم نمایش اسامی)</option>
+      </select>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><i class="fa-solid fa-calendar-plus"></i> تاریخ شروع</div>
+      <input type="date" id="surveyStartDate">
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><i class="fa-solid fa-calendar-xmark"></i> محدودیت زمانی</div>
+      <div class="inline-row">
+        <input type="date" id="surveyEndDate">
+        <input type="time" id="surveyEndTime">
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><i class="fa-solid fa-users-slash"></i> محدودیت تعداد آرا</div>
+      <label>حداکثر تعداد</label>
+      <input type="number" id="voteLimitNumber" placeholder="مثلاً ۱۰۰" min="1">
+      <label>اعمال روی</label>
+      <div class="inline-row">
+        <select id="voteLimitTarget">
+          <option value="all">همه نظرسنجی</option>
+        </select>
+      </div>
+      <div class="hint">مثال: all(100) یعنی کل نظرسنجی حداکثر ۱۰۰ رأی</div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title"><i class="fa-solid fa-bullhorn"></i> انتشار در کانال</div>
+      <div class="channels-check-list" id="channelsCheckList">
+        <div style="font-size:11px;color:var(--text-light);">در حال بارگذاری کانال‌ها...</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-draft" onclick="saveSurvey('draft')"><i class="fa-solid fa-save"></i> ذخیره پیش‌نویس</button>
+      <button class="btn btn-publish" onclick="saveSurvey('active')"><i class="fa-solid fa-paper-plane"></i> انتشار</button>
+    </div>
+
+  </section>
+
+  <footer class="footer">
+    <div class="footer-stats">
+      <div class="footer-stat"><i class="fa-solid fa-eye"></i><small>بازدید</small><span id="footerVisits">—</span></div>
+      <div class="footer-stat"><i class="fa-solid fa-users"></i><small>کاربران</small><span id="footerUsers">—</span></div>
+      <div class="footer-stat"><i class="fa-solid fa-square-poll-vertical"></i><small>نظرسنجی فعال</small><span id="footerActive">—</span></div>
+    </div>
+    <div class="footer-links">
+      <a href="../../about/"><i class="fa-solid fa-circle-info"></i> درباره ما</a>
+      <a href="../../guide/"><i class="fa-solid fa-book"></i> راهنما</a>
+      <a href="../../contact/"><i class="fa-solid fa-phone"></i> ارتباط با ما</a>
+    </div>
+    <p class="footer-text">نظرسنجی‌ساز ایتا — کلیه حقوق محفوظ است</p>
+  </footer>
+
+  <script>
+    (function() {
+      var PUBLIC_API = 'https://script.google.com/macros/s/AKfycbyBDOkj70YUmGx5F3f3bAybEVNuU9iop8G6ibHhLYU40hQ-jGOX-6pkDLa6PpfpcWIVfw/exec';
+      var PRIVATE_API = 'https://script.google.com/macros/s/AKfycbxNwRKWcYmAyQ33Jr_V1CxPwrsTpGmSswzuZVn0ENUz6RZ_NAD-1E6XCBaiKOqfnCM-XA/exec';
+
+      var currentUser = null;
+      var userChannels = [];
+
+      function initTheme() {
+        if (window.Eitaa && window.Eitaa.WebApp) {
+          var scheme = window.Eitaa.WebApp.colorScheme;
+          document.documentElement.setAttribute('data-theme', scheme === 'dark' ? 'dark' : 'light');
+          window.Eitaa.WebApp.onEvent('themeChanged', function() {
+            document.documentElement.setAttribute('data-theme', window.Eitaa.WebApp.colorScheme === 'dark' ? 'dark' : 'light');
+          });
+        }
+      }
+
+      function initBackButton() {
+        if (window.Eitaa && window.Eitaa.WebApp) {
+          window.Eitaa.WebApp.BackButton.show();
+          window.Eitaa.WebApp.BackButton.onClick(function() { window.location.href = '../../dashboard/'; });
+        }
+      }
+
+      function ready() { if (window.Eitaa && window.Eitaa.WebApp) window.Eitaa.WebApp.ready(); }
+
+      function safeFetch(url, options) {
+        return fetch(url, options).then(function(r) { return r.ok ? r.json().catch(function() { return null; }) : null; }).catch(function() { return null; });
+      }
+
+      function getInitData() { return (window.Eitaa && window.Eitaa.WebApp) ? window.Eitaa.WebApp.initData || '' : ''; }
+      function getUserId() { return (window.Eitaa && window.Eitaa.WebApp && window.Eitaa.WebApp.initDataUnsafe) ? String(window.Eitaa.WebApp.initDataUnsafe.user && window.Eitaa.WebApp.initDataUnsafe.user.id || 'demo_user') : 'demo_user'; }
+
+      function previewImage() {
+        var url = document.getElementById('surveyImage').value.trim();
+        var img = document.getElementById('imgPreview');
+        if (url) { img.src = url; img.style.display = 'block'; } else { img.style.display = 'none'; }
+      }
+
+      function addOption() {
+        var container = document.getElementById('optionsContainer');
+        var count = container.querySelectorAll('.option-row').length;
+        if (count >= 10) return;
+        var row = document.createElement('div');
+        row.className = 'option-row';
+        row.innerHTML = '<input type="text" class="option-input" placeholder="گزینه ' + (count + 1) + '"><button class="btn-del-option" onclick="removeOption(this)"><i class="fa-solid fa-times"></i></button>';
+        container.appendChild(row);
+        updateOptionButtons();
+        updateVoteLimitTarget();
+      }
+
+      window.removeOption = function(btn) {
+        var container = document.getElementById('optionsContainer');
+        if (container.querySelectorAll('.option-row').length <= 2) return;
+        btn.parentElement.remove();
+        updateOptionButtons();
+        updateVoteLimitTarget();
+      };
+
+      function updateOptionButtons() {
+        var container = document.getElementById('optionsContainer');
+        var rows = container.querySelectorAll('.option-row');
+        var btnAdd = document.getElementById('btnAddOption');
+        rows.forEach(function(row, i) {
+          var input = row.querySelector('input');
+          var delBtn = row.querySelector('button');
+          input.placeholder = 'گزینه ' + (i + 1);
+          delBtn.disabled = rows.length <= 2;
+        });
+        btnAdd.style.display = rows.length >= 10 ? 'none' : 'inline-flex';
+      }
+
+      function updateVoteLimitTarget() {
+        var container = document.getElementById('optionsContainer');
+        var rows = container.querySelectorAll('.option-row');
+        var select = document.getElementById('voteLimitTarget');
+        select.innerHTML = '<option value="all">همه نظرسنجی</option>';
+        rows.forEach(function(row, i) {
+          var val = row.querySelector('input').value.trim() || ('گزینه ' + (i + 1));
+          select.innerHTML += '<option value="' + (i + 1) + '">گزینه ' + (i + 1) + ' — ' + val + '</option>';
+        });
+      }
+
+      document.getElementById('optionsContainer').addEventListener('input', function() { updateVoteLimitTarget(); });
+
+      async function loadData() {
+        var userId = getUserId();
+        currentUser = userId;
+
+        var userData = await safeFetch(PUBLIC_API + '?action=getUser&id=' + userId);
+        if (userData && !userData.error && userData.channels) {
+          userChannels = userData.channels.split(',').map(function(c) { return c.trim(); }).filter(function(c) { return c; });
+        }
+
+        var statsAll = await safeFetch(PUBLIC_API + '?action=getStats&id=all');
+        var usersCount = await safeFetch(PUBLIC_API + '?action=getUsersCount');
+        var activeCount = await safeFetch(PUBLIC_API + '?action=getActiveSurveysCount');
+
+        if (statsAll && statsAll.seen) document.getElementById('footerVisits').textContent = statsAll.seen.split(',').filter(function(e) { return e.trim(); }).length.toLocaleString('fa-IR');
+        if (usersCount && typeof usersCount.count === 'number') document.getElementById('footerUsers').textContent = usersCount.count.toLocaleString('fa-IR');
+        if (activeCount && typeof activeCount.count === 'number') document.getElementById('footerActive').textContent = activeCount.count.toLocaleString('fa-IR');
+
+        renderChannels();
+      }
+
+      function renderChannels() {
+        var list = document.getElementById('channelsCheckList');
+        if (userChannels.length === 0) {
+          list.innerHTML = '<div style="font-size:11px;color:var(--text-light);">کانالی متصل نشده است. <a href="../../connect/" style="color:var(--primary);">اتصال کانال</a></div>';
+          return;
+        }
+        list.innerHTML = userChannels.map(function(ch) {
+          return '<label class="channel-check"><input type="checkbox" value="' + ch + '"> <i class="fa-solid fa-bullhorn" style="color:var(--primary);font-size:14px;"></i> ' + ch + '</label>';
+        }).join('');
+      }
+
+      function getOptions() {
+        var inputs = document.querySelectorAll('#optionsContainer .option-input');
+        var opts = [];
+        inputs.forEach(function(inp) { var v = inp.value.trim(); if (v) opts.push(v); });
+        return opts;
+      }
+
+      async function saveSurvey(status) {
+        var title = document.getElementById('surveyTitle').value.trim();
+        var explanation = document.getElementById('surveyExplanation').value.trim();
+        var image = document.getElementById('surveyImage').value.trim();
+        var type = document.getElementById('surveyType').value;
+        var startDate = document.getElementById('surveyStartDate').value;
+        var endDate = document.getElementById('surveyEndDate').value;
+        var endTime = document.getElementById('surveyEndTime').value;
+        var voteNum = document.getElementById('voteLimitNumber').value;
+        var voteTarget = document.getElementById('voteLimitTarget').value;
+
+        var options = getOptions();
+        if (options.length < 2) { alert('حداقل ۲ گزینه وارد کنید'); return; }
+        if (options.length > 10) { alert('حداکثر ۱۰ گزینه مجاز است'); return; }
+
+        var timeLimit = endDate ? (endDate + (endTime ? ' ' + endTime : '')) : '';
+
+        var voteLimit = '';
+        if (voteNum) {
+          voteLimit = voteTarget + '(' + voteNum + ')';
+        }
+
+        var selectedChannels = [];
+        document.querySelectorAll('#channelsCheckList input:checked').forEach(function(cb) { selectedChannels.push(cb.value); });
+
+        var initData = getInitData();
+        var result = await safeFetch(PRIVATE_API, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'createSurvey',
+            init_data: initData,
+            title: title,
+            explanation: explanation,
+            image: image,
+            type: type,
+            options: JSON.stringify({ items: options, vote_limit: voteLimit, status: status, start_date: startDate, channels: selectedChannels }),
+            date: new Date().toISOString(),
+            time_limit: timeLimit,
+            number_limit: voteLimit
+          })
+        });
+
+        if (result && result.survey_id) {
+          alert(status === 'active' ? 'نظرسنجی با موفقیت منتشر شد!' : 'پیش‌نویس ذخیره شد.');
+          window.location.href = '../../dashboard/';
+        } else {
+          alert('خطا در ذخیره‌سازی. دوباره تلاش کنید.');
+        }
+      }
+
+      window.saveSurvey = saveSurvey;
+
+      initTheme();
+      initBackButton();
+      ready();
+      loadData();
+      updateOptionButtons();
+      updateVoteLimitTarget();
+    })();
+  </script>
+
+</body>
+</html>
