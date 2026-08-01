@@ -1,25 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>انواع جعبه ها</title>
+    <style>
+        /* استایل کلی برای صفحه */
+        body {
+            font-family: Tahoma, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+
+        /* استایل مشترک برای همه جعبه ها */
+        .box {
+            padding: 15px;
+            margin: 20px 0;
+            border: 2px solid #333;
+            border-radius: 10px;
+        }
+
+        /* رنگ های مختلف برای تشخیص راحت تر */
+        .red-bg { background: #ffcccc; }
+        .blue-bg { background: #cce5ff; }
+        .green-bg { background: #ccffcc; }
+        .yellow-bg { background: #ffffcc; }
+        .purple-bg { background: #e6ccff; }
+
+        /* استایل برای span */
+        .highlight {
+            background: yellow;
+            font-weight: bold;
+            padding: 0 5px;
+        }
+
+        /* استایل برای تگ های معنایی */
+        header { background: #ff9999; padding: 20px; border-radius: 10px; }
+        nav { background: #99ccff; padding: 15px; border-radius: 10px; margin: 10px 0; }
+        main { background: #99ff99; padding: 20px; border-radius: 10px; }
+        section { background: #ffff99; padding: 15px; border-radius: 10px; margin: 10px 0; }
+        article { background: #ffcc99; padding: 15px; border-radius: 10px; margin: 10px 0; }
+        aside { background: #cc99ff; padding: 15px; border-radius: 10px; margin: 10px 0; }
+        footer { background: #99cc99; padding: 15px; border-radius: 10px; margin: 10px 0; }
+    </style>
+</head>
 <body>
+
+    <h1>🔲 نمایش همه انواع جعبه ها</h1>
+
+    <!-- ============================================ -->
+    <!-- 1. جعبه های DIV (بلوکی)                      -->
+    <!-- ============================================ -->
+
+    <h2>1. جعبه های DIV (بلوکی - هر کدام در یک خط جدید)</h2>
+
+    <div class="box red-bg">
+        <h3>📦 جعبه شماره 1 (DIV)</h3>
+        <p>این یک جعبه با تگ <code>&lt;div&gt;</code> است. رنگ زمینه قرمز دارد.</p>
+    </div>
+
+    <div class="box blue-bg">
+        <h3>📦 جعبه شماره 2 (DIV)</h3>
+        <p>این یک جعبه دیگر با تگ <code>&lt;div&gt;</code> است. رنگ زمینه آبی دارد.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- 2. جعبه های SPAN (خطی - کنار هم قرار می گیرند)-->
+    <!-- ============================================ -->
+
+    <h2>2. جعبه های SPAN (خطی - کنار هم در یک خط)</h2>
+
+    <p>
+        این یک پاراگراف است. درون آن 
+        <span class="highlight">این قسمت با SPAN زرد شده</span> 
+        و همچنین 
+        <span style="background:lightblue; padding:5px;">این قسمت با SPAN آبی</span> 
+        و 
+        <span style="background:lightgreen; padding:5px;">این قسمت با SPAN سبز</span> 
+        شده است. 
+        ببینید که همه SPAN ها در <strong>یک خط</strong> کنار هم قرار گرفته اند.
+    </p>
+
+    <p>
+        <span style="background:red; color:white; padding:10px;">SPAN قرمز</span>
+        <span style="background:orange; padding:10px;">SPAN نارنجی</span>
+        <span style="background:purple; color:white; padding:10px;">SPAN بنفش</span>
+        <br>
+        <span style="background:pink; padding:10px;">SPAN صورتی</span>
+        <span style="background:teal; color:white; padding:10px;">SPAN فیروزه ای</span>
+    </p>
+
+    <!-- ============================================ -->
+    <!-- 3. تگ های معنایی (جایگزین های DIV)          -->
+    <!-- ============================================ -->
+
+    <h2>3. تگ های معنایی (جایگزین های مدرن DIV)</h2>
+
     <header>
-        <h1>وبسایت من</h1>
-        <nav>
-            <a href="#">خانه</a> | <a href="#">درباره ما</a>
-        </nav>
+        <h3>🔹 HEADER - سربرگ صفحه</h3>
+        <p>قسمت بالای صفحه (لوگو، عنوان اصلی، منو)</p>
     </header>
 
+    <nav>
+        <h3>🔹 NAV - منوی ناوبری</h3>
+        <p>خانه | درباره ما | محصولات | تماس با ما</p>
+    </nav>
+
     <main>
+        <h3>🔹 MAIN - محتوای اصلی</h3>
+        <p>این بخش شامل مهمترین محتوای صفحه است.</p>
+
         <section>
-            <h2>آخرین مطالب</h2>
+            <h4>🔸 SECTION - بخش اول</h4>
+            <p>این یک بخش از محتوای اصلی است.</p>
+        </section>
+
+        <section>
+            <h4>🔸 SECTION - بخش دوم</h4>
+            <p>این بخش دیگری از محتوای اصلی است.</p>
+
             <article>
-                <h3>مطلب اول</h3>
-                <p>متن مطلب...</p>
+                <h5>📄 ARTICLE - مطلب اول</h5>
+                <p>این یک مقاله یا پست وبلاگ مستقل است.</p>
+            </article>
+
+            <article>
+                <h5>📄 ARTICLE - مطلب دوم</h5>
+                <p>این یک مقاله دیگر است که کاملاً مستقل از مقاله قبلی است.</p>
             </article>
         </section>
-        <aside>
-            <p>تبلیغات یا مطالب کناری</p>
-        </aside>
     </main>
 
+    <aside>
+        <h3>🔹 ASIDE - محتوای کناری (سایدبار)</h3>
+        <p>تبلیغات، مطالب مرتبط، یا اطلاعات جانبی دیگر.</p>
+    </aside>
+
     <footer>
-        <p>تماس با ما: info@site.com</p>
+        <h3>🔹 FOOTER - پایین صفحه</h3>
+        <p>درباره ما | تماس با ما | قوانین | تمام حقوق محفوظ است</p>
     </footer>
+
+    <!-- ============================================ -->
+    <!-- 4. مقایسه DIV با تگ های معنایی               -->
+    <!-- ============================================ -->
+
+    <h2>4. مقایسه DIV با تگ های معنایی (از نظر ظاهر)</h2>
+
+    <div style="background:lightgray; padding:20px; border-radius:10px; margin:10px 0;">
+        <h3>🔸 DIV معمولی</h3>
+        <p>این یک جعبه با تگ DIV است. موتورهای جستجو نمی دانند این بخش چه کاری انجام می دهد.</p>
+    </div>
+
+    <section style="background:lightyellow; padding:20px; border-radius:10px; margin:10px 0;">
+        <h3>🔸 SECTION (معنایی)</h3>
+        <p>این یک جعبه با تگ SECTION است. موتورهای جستجو متوجه می شوند که این یک بخش از محتوا است.</p>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- 5. جمع بندی نهایی در یک جدول                -->
+    <!-- ============================================ -->
+
+    <h2>5. جمع بندی انواع جعبه ها</h2>
+
+    <table border="1" style="width:100%; border-collapse:collapse; text-align:center;">
+        <tr style="background:black; color:white;">
+            <th>نوع جعبه</th>
+            <th>رفتار</th>
+            <th>کاربرد</th>
+            <th>مثال</th>
+        </tr>
+        <tr>
+            <td><code>&lt;div&gt;</code></td>
+            <td>بلوکی (خط جدید)</td>
+            <td>گروهبندی کلی</td>
+            <td style="background:lightblue;">بخش های بزرگ</td>
+        </tr>
+        <tr>
+            <td><code>&lt;span&gt;</code></td>
+            <td>خطی (کنار هم)</td>
+            <td>تغییر بخشی از متن</td>
+            <td style="background:lightgreen;">کلمه یا عبارت کوتاه</td>
+        </tr>
+        <tr>
+            <td><code>&lt;header&gt;</code></td>
+            <td>بلوکی (معنایی)</td>
+            <td>سربرگ صفحه</td>
+            <td style="background:#ff9999;">بالای صفحه</td>
+        </tr>
+        <tr>
+            <td><code>&lt;nav&gt;</code></td>
+            <td>بلوکی (معنایی)</td>
+            <td>منوی ناوبری</td>
+            <td style="background:#99ccff;">لینک های اصلی</td>
+        </tr>
+        <tr>
+            <td><code>&lt;main&gt;</code></td>
+            <td>بلوکی (معنایی)</td>
+            <td>محتوای اصلی</td>
+            <td style="background:#99ff99;">مهمترین بخش</td>
+        </tr>
+        <tr>
+            <td><code>&lt;section&gt;</code></td>
+            <td>بلوکی (معنایی)</td>
+            <td>بخش های محتوا</td>
+            <td style="background:#ffff99;">بخش های مختلف</td>
+        </tr>
+        <tr>
+            <td><code>&lt;article&gt;</code></td>
+            <td>بلوکی (معنایی)</td>
+            <td>مطالب مستقل</td>
+            <td style="background:#ffcc99;">پست وبلاگ</td>
+        </tr>
+        <tr>
+            <td><code>&lt;aside&gt;</code></td>
+            <td>بلوکی (معنایی)</td>
+            <td>محتوای کناری</td>
+            <td style="background:#cc99ff;">سایدبار</td>
+        </tr>
+        <tr>
+            <td><code>&lt;footer&gt;</code></td>
+            <td>بلوکی (معنایی)</td>
+            <td>پایین صفحه</td>
+            <td style="background:#99cc99;">درباره ما، تماس</td>
+        </tr>
+    </table>
+
+    <br>
+    <hr>
+    <h3>📝 نکته نهایی:</h3>
+    <ul>
+        <li><strong>DIV</strong> و <strong>تگ های معنایی</strong> (<code>header, nav, main, ...</code>) رفتار یکسانی دارند (بلوکی).</li>
+        <li>تفاوت در <strong>معنا</strong> است: تگ های معنایی به گوگل می فهمانند هر بخش چه کاری انجام می دهد.</li>
+        <li><strong>SPAN</strong> کاملاً متفاوت است: <strong>خطی</strong> است و فقط برای بخش های کوچک متن استفاده می شود.</li>
+        <li>برای چیدمان حرفه ای، از <strong>تگ های معنایی</strong> به جای DIV استفاده کنید.</li>
+    </ul>
+
 </body>
+</html>
