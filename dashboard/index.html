@@ -20,6 +20,8 @@
       --header-bg: #ffffff; --footer-bg: #fef9f3;
       --overlay: rgba(249, 115, 22, 0.08);
       --logo-bg: #fef9f3;
+      --support-color: #2196F3;
+      --support-rgb: 33, 150, 243;
     }
 
     [data-theme="dark"] {
@@ -90,7 +92,7 @@
 
     .btn-profile-avatar img { width: 100%; height: 100%; border-radius: 4px; object-fit: cover; }
 
-    .main-container { flex: 1; max-width: 1100px; width: 100%; margin: 0 auto; padding: 20px 16px 80px; }
+    .main-container { flex: 1; max-width: 1100px; width: 100%; margin: 0 auto; padding: 20px 16px 100px; }
 
     .loader-wrapper { display: flex; align-items: center; justify-content: center; min-height: 50vh; }
 
@@ -198,11 +200,8 @@
 
     .btn-sm:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000000; }
     .btn-sm-primary { background: var(--primary); color: #fff; }
-    .btn-sm-primary:hover { background: var(--primary-dark); }
     .btn-sm-outline { background: transparent; color: var(--primary); }
-    .btn-sm-outline:hover { background: var(--overlay); }
     .btn-sm-ghost { background: transparent; color: var(--text-light); }
-    .btn-sm-ghost:hover { background: var(--bg2); }
 
     .empty-state {
       text-align: center; padding: 60px 20px; color: var(--text-light); grid-column: 1/-1;
@@ -231,24 +230,92 @@
 
     .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
     .footer-links a { color: var(--primary-dark); font-size: 11px; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: color 0.3s; }
-    .footer-links a:hover { color: var(--dark); }
     .footer-text { font-size: 10px; color: var(--text-light); transition: color 0.3s; }
 
-    .floating-support {
-      position: fixed; bottom: 24px; right: 24px;
-      width: 56px; height: 56px;
-      background: #2196F3;
-      color: #fff; border: 1px solid #000000; border-radius: 4px;
-      font-size: 24px; cursor: pointer;
-      box-shadow: 4px 4px 0 #000000;
-      z-index: 999; display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s ease; text-decoration: none;
+    .floating-actions {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      gap: 10px;
+      z-index: 998;
     }
 
-    .floating-support:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #000000; }
-    .floating-support i { animation: float 2s ease-in-out infinite; }
+    .floating-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 4px;
+      color: #fff;
+      border: 1px solid #000000;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      box-shadow: 4px 4px 0 #000000;
+      position: relative;
+      direction: rtl;
+      font-family: inherit;
+    }
 
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+    .floating-btn.btn-support { background: #2196F3; }
+    .floating-btn.btn-about { background: var(--primary); }
+    .floating-btn.btn-guide { background: var(--primary); }
+    .floating-btn.btn-contact { background: var(--primary); }
+
+    .floating-btn i {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    .floating-btn .btn-text {
+      opacity: 0;
+      padding: 0 56px 0 18px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-block;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .floating-btn.expanded {
+      width: 150px;
+      border-radius: 4px;
+    }
+
+    .floating-btn.expanded .btn-text {
+      opacity: 1;
+    }
+
+    .floating-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #000000; }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 14px;
+      background: #fff;
+      margin-right: 2px;
+      animation: blink 0.8s infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
 
     @media (max-width: 768px) {
       .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
@@ -256,7 +323,11 @@
       .surveys-grid { grid-template-columns: 1fr; }
       .header-title { font-size: 17px; }
       .search-filter-bar { flex-direction: column; }
-      .floating-support { bottom: 16px; right: 16px; width: 48px; height: 48px; font-size: 20px; box-shadow: 3px 3px 0 #000000; }
+      .floating-actions { bottom: 16px; right: 12px; gap: 8px; }
+      .floating-btn { width: 42px; height: 42px; box-shadow: 3px 3px 0 #000000; }
+      .floating-btn i { width: 42px; height: 42px; font-size: 16px; }
+      .floating-btn .btn-text { padding: 0 48px 0 14px; font-size: 11px; }
+      .floating-btn.expanded { width: 135px; }
       .footer-stats { gap: 14px; }
     }
 
@@ -384,6 +455,25 @@
 
   </section>
 
+  <div class="floating-actions">
+    <button class="floating-btn btn-support" id="floatingSupport" onclick="window.location.href='../support/'" title="پشتیبانی">
+      <span class="btn-text" id="supportText"></span>
+      <i class="fa-solid fa-headset"></i>
+    </button>
+    <button class="floating-btn btn-about" id="floatingAbout" onclick="window.location.href='../about/'" title="درباره ما">
+      <span class="btn-text" id="aboutText"></span>
+      <i class="fa-solid fa-circle-info"></i>
+    </button>
+    <button class="floating-btn btn-guide" id="floatingGuide" onclick="window.location.href='../guide/'" title="راهنما">
+      <span class="btn-text" id="guideText"></span>
+      <i class="fa-solid fa-book"></i>
+    </button>
+    <button class="floating-btn btn-contact" id="floatingContact" onclick="window.location.href='../contact/'" title="ارتباط با ما">
+      <span class="btn-text" id="contactText"></span>
+      <i class="fa-solid fa-phone"></i>
+    </button>
+  </div>
+
   <footer class="footer">
     <div class="footer-stats">
       <div class="footer-stat">
@@ -409,10 +499,6 @@
     </div>
     <p class="footer-text">نظرسنجی‌ساز ایتا — کلیه حقوق محفوظ است</p>
   </footer>
-
-  <a href="../support/" class="floating-support" title="پشتیبانی">
-    <i class="fa-solid fa-headset"></i>
-  </a>
 
   <script>
     (function() {
@@ -529,10 +615,62 @@
       };
       window._editSurvey = function(id) { window.location.href = '../builder/edit/?id=' + id; };
 
+      function typeText(element, text, callback) {
+        let i = 0;
+        element.innerHTML = '<span class="typing-cursor"></span>';
+        const cursor = element.querySelector('.typing-cursor');
+        
+        function type() {
+          if (i < text.length) {
+            cursor.insertAdjacentText('beforebegin', text[i]);
+            i++;
+            setTimeout(type, 80);
+          } else {
+            cursor.remove();
+            if (callback) setTimeout(callback, 2000);
+          }
+        }
+        type();
+      }
+
+      function clearText(element, callback) {
+        element.textContent = '';
+        if (callback) callback();
+      }
+
+      function animateFloatingButtons() {
+        const buttons = [
+          { btn: document.getElementById('floatingSupport'), text: document.getElementById('supportText'), label: 'پشتیبانی' },
+          { btn: document.getElementById('floatingAbout'), text: document.getElementById('aboutText'), label: 'درباره ما' },
+          { btn: document.getElementById('floatingGuide'), text: document.getElementById('guideText'), label: 'راهنما' },
+          { btn: document.getElementById('floatingContact'), text: document.getElementById('contactText'), label: 'ارتباط با ما' }
+        ];
+
+        if (!buttons[0].btn) return;
+
+        let currentIndex = 0;
+
+        function cycle() {
+          const current = buttons[currentIndex];
+          
+          current.btn.classList.add('expanded');
+          typeText(current.text, current.label, () => {
+            clearText(current.text);
+            current.btn.classList.remove('expanded');
+          });
+
+          currentIndex = (currentIndex + 1) % buttons.length;
+        }
+
+        cycle();
+        setInterval(cycle, 5000);
+      }
+
       initTheme();
       initBackButton();
       ready();
       loadAllData();
+      setTimeout(animateFloatingButtons, 1000);
     })();
   </script>
 
