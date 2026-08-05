@@ -15,7 +15,8 @@
       --bg: #ffffff; --bg2: #fef9f3; --bg3: #f5efe6;
       --dark: #0f172a; --text: #334155; --text-light: #94a3b8; --white: #ffffff;
       --card-bg: #ffffff; --card-border: #f0e8db;
-      --shadow: 0 2px 12px rgba(0,0,0,0.04); --shadow-hover: 0 8px 24px rgba(0,0,0,0.08);
+      --shadow: 4px 4px 0 #000000; --shadow-hover: 6px 6px 0 #000000;
+      --shadow-sm: 2px 2px 0 #000000;
       --header-bg: #ffffff; --footer-bg: #fef9f3;
       --overlay: rgba(249, 115, 22, 0.08);
       --logo-bg: #fef9f3;
@@ -26,7 +27,8 @@
       --bg: #0f172a; --bg2: #1e293b; --bg3: #334155;
       --dark: #e2e8f0; --text: #cbd5e1; --text-light: #64748b; --white: #1e293b;
       --card-bg: #1e293b; --card-border: #334155;
-      --shadow: 0 2px 12px rgba(0,0,0,0.3); --shadow-hover: 0 8px 24px rgba(0,0,0,0.5);
+      --shadow: 4px 4px 0 #000000; --shadow-hover: 6px 6px 0 #000000;
+      --shadow-sm: 2px 2px 0 #000000;
       --header-bg: #1e293b; --footer-bg: #1e293b;
       --overlay: rgba(249, 115, 22, 0.12);
       --logo-bg: #1e293b;
@@ -40,9 +42,10 @@
     }
 
     .header {
-      background: var(--header-bg); box-shadow: 0 1px 8px rgba(0,0,0,0.03);
+      background: var(--header-bg); box-shadow: 0 4px 0 #000000;
       padding: 14px 20px; position: sticky; top: 0; z-index: 100;
-      border-bottom: 1px solid var(--bg3); transition: all 0.3s ease;
+      border: 1px solid #000000; border-top: none; transition: all 0.3s ease;
+      margin: 0 0 4px 0;
     }
 
     .header-inner {
@@ -53,11 +56,11 @@
     .header-right { display: flex; align-items: center; gap: 10px; }
 
     .header-logo {
-      width: 42px; height: 42px; border-radius: 12px;
+      width: 42px; height: 42px; border-radius: 4px;
       background: var(--logo-bg);
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.15);
-      padding: 4px;
+      box-shadow: 3px 3px 0 #000000;
+      padding: 4px; border: 1px solid #000000;
     }
 
     .header-logo img { width: 100%; height: 100%; object-fit: contain; }
@@ -70,27 +73,29 @@
     .btn-profile {
       display: flex; align-items: center; gap: 8px;
       font-size: 13px; font-weight: 600; color: var(--primary-dark); text-decoration: none;
-      padding: 6px 12px; border-radius: 10px; border: 1.5px solid var(--primary-light);
-      transition: all 0.3s ease; white-space: nowrap;
+      padding: 6px 12px; border-radius: 4px; border: 1px solid #000000;
+      transition: all 0.15s ease; white-space: nowrap;
+      box-shadow: 2px 2px 0 #000000; background: var(--card-bg);
     }
 
-    .btn-profile:hover { background: var(--overlay); }
+    .btn-profile:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000000; }
 
     .btn-profile-avatar {
-      width: 30px; height: 30px; border-radius: 50%; object-fit: cover;
+      width: 30px; height: 30px; border-radius: 4px; object-fit: cover;
       background: var(--overlay); flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
       font-size: 14px; color: var(--primary);
+      border: 1px solid #000000;
     }
 
-    .btn-profile-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+    .btn-profile-avatar img { width: 100%; height: 100%; border-radius: 4px; object-fit: cover; }
 
-    .main-container { flex: 1; max-width: 1100px; width: 100%; margin: 0 auto; padding: 20px 16px; }
+    .main-container { flex: 1; max-width: 1100px; width: 100%; margin: 0 auto; padding: 20px 16px 80px; }
 
     .loader-wrapper { display: flex; align-items: center; justify-content: center; min-height: 50vh; }
 
     .loader {
-      width: 48px; height: 48px; border: 4px solid var(--bg3);
+      width: 48px; height: 48px; border: 4px solid #000000;
       border-top-color: var(--primary); border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
@@ -109,12 +114,12 @@
     .products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
 
     .product-card {
-      background: var(--card-bg); border-radius: 12px; overflow: hidden;
-      box-shadow: var(--shadow); transition: all 0.3s ease; cursor: pointer;
-      border: 2px dashed var(--primary-light); text-decoration: none; color: var(--text);
+      background: var(--card-bg); border-radius: 4px; overflow: hidden;
+      box-shadow: 4px 4px 0 #000000; transition: all 0.15s ease; cursor: pointer;
+      border: 2px dashed var(--primary); text-decoration: none; color: var(--text);
     }
 
-    .product-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--primary); }
+    .product-card:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #000000; }
 
     .product-image {
       width: 100%; height: 120px; object-fit: cover;
@@ -138,7 +143,7 @@
       display: flex; align-items: center; gap: 8px; transition: color 0.3s;
     }
 
-    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--bg3); transition: background 0.3s; }
+    .section-title::after { content: ''; flex: 1; height: 2px; background: #000000; transition: background 0.3s; }
     .survey-count { font-size: 12px; color: var(--text-light); font-weight: 400; }
 
     .search-filter-bar { display: flex; gap: 8px; margin-bottom: 20px; align-items: center; }
@@ -146,43 +151,39 @@
     .search-box { flex: 2; min-width: 180px; position: relative; }
 
     .search-box input {
-      width: 100%; padding: 10px 36px 10px 12px; border: 1px solid var(--card-border);
-      border-radius: 10px; font-size: 12px; color: var(--dark); background: var(--card-bg);
-      outline: none; font-family: inherit; transition: all 0.3s;
+      width: 100%; padding: 10px 36px 10px 12px; border: 1px solid #000000;
+      border-radius: 4px; font-size: 12px; color: var(--dark); background: var(--card-bg);
+      outline: none; font-family: inherit; transition: all 0.15s ease;
+      box-shadow: 3px 3px 0 #000000;
     }
 
-    .search-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1); }
+    .search-box input:focus { border-color: var(--primary); }
     .search-box i { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-light); font-size: 13px; }
 
     .filter-select select {
-      padding: 10px 14px; border: 1px solid var(--card-border); border-radius: 10px;
+      padding: 10px 14px; border: 1px solid #000000; border-radius: 4px;
       font-size: 12px; color: var(--dark); background: var(--card-bg); outline: none; font-family: inherit;
-      cursor: pointer; appearance: none;
+      cursor: pointer; appearance: none; box-shadow: 3px 3px 0 #000000; transition: all 0.15s ease;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
       background-repeat: no-repeat; background-position: left 10px center; min-width: 120px;
     }
 
-    .filter-select select:focus { border-color: var(--primary); box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.1); }
+    .filter-select select:focus { border-color: var(--primary); }
 
     .surveys-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 
     .survey-card {
-      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
-      padding: 16px; cursor: pointer; transition: all 0.3s ease; box-shadow: var(--shadow);
+      background: var(--card-bg); border: 1px solid #000000; border-radius: 4px;
+      padding: 16px; cursor: pointer; transition: all 0.15s ease; box-shadow: 4px 4px 0 #000000;
       position: relative; overflow: hidden;
     }
 
-    .survey-card::before {
-      content: ''; position: absolute; right: 0; top: 0; width: 3px; height: 100%;
-      background: var(--primary); transition: all 0.3s ease;
-    }
-
-    .survey-card:hover { transform: translateX(-4px); box-shadow: var(--shadow-hover); border-color: var(--primary-light); }
+    .survey-card:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #000000; }
 
     .survey-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
     .survey-card-title { font-size: 14px; font-weight: 700; color: var(--dark); line-height: 1.5; transition: color 0.3s; }
 
-    .survey-status { font-size: 10px; padding: 4px 10px; border-radius: 12px; font-weight: 600; white-space: nowrap; background: var(--overlay); color: var(--primary); }
+    .survey-status { font-size: 10px; padding: 4px 10px; border-radius: 4px; font-weight: 600; white-space: nowrap; background: var(--overlay); color: var(--primary); border: 1px solid #000000; }
 
     .survey-card-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; }
     .survey-meta-item { font-size: 11px; color: var(--text-light); display: flex; align-items: center; gap: 4px; }
@@ -190,14 +191,15 @@
     .survey-card-actions { display: flex; gap: 8px; padding-top: 10px; border-top: 1px solid var(--bg3); }
 
     .btn-sm {
-      font-size: 11px; padding: 6px 12px; border-radius: 8px; border: none; cursor: pointer;
-      font-family: inherit; font-weight: 600; transition: all 0.3s ease; display: flex; align-items: center; gap: 4px;
-      text-decoration: none; white-space: nowrap;
+      font-size: 11px; padding: 6px 12px; border-radius: 4px; border: 1px solid #000000; cursor: pointer;
+      font-family: inherit; font-weight: 600; transition: all 0.15s ease; display: flex; align-items: center; gap: 4px;
+      text-decoration: none; white-space: nowrap; box-shadow: 2px 2px 0 #000000;
     }
 
+    .btn-sm:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000000; }
     .btn-sm-primary { background: var(--primary); color: #fff; }
     .btn-sm-primary:hover { background: var(--primary-dark); }
-    .btn-sm-outline { background: transparent; color: var(--primary); border: 1px solid var(--primary-light); }
+    .btn-sm-outline { background: transparent; color: var(--primary); }
     .btn-sm-outline:hover { background: var(--overlay); }
     .btn-sm-ghost { background: transparent; color: var(--text-light); }
     .btn-sm-ghost:hover { background: var(--bg2); }
@@ -212,13 +214,14 @@
 
     .empty-state .btn-create {
       display: inline-flex; align-items: center; gap: 6px;
-      background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 10px;
-      text-decoration: none; font-weight: 700; font-size: 14px; transition: all 0.3s ease;
+      background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 4px;
+      text-decoration: none; font-weight: 700; font-size: 14px; transition: all 0.15s ease;
+      border: 1px solid #000000; box-shadow: 3px 3px 0 #000000;
     }
 
-    .empty-state .btn-create:hover { background: var(--primary-dark); transform: translateY(-2px); }
+    .empty-state .btn-create:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #000000; }
 
-    .footer { text-align: center; padding: 16px 20px; background: var(--footer-bg); border-top: 1px solid var(--bg3); transition: all 0.3s ease; }
+    .footer { text-align: center; padding: 16px 20px; background: var(--footer-bg); border-top: 1px solid #000000; transition: all 0.3s ease; }
 
     .footer-stats { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
     .footer-stat { display: flex; align-items: center; gap: 6px; }
@@ -234,15 +237,15 @@
     .floating-support {
       position: fixed; bottom: 24px; right: 24px;
       width: 56px; height: 56px;
-      background: linear-gradient(145deg, #2196F3, #1976D2);
-      color: #fff; border: none; border-radius: 50%;
+      background: #2196F3;
+      color: #fff; border: 1px solid #000000; border-radius: 4px;
       font-size: 24px; cursor: pointer;
-      box-shadow: 0 6px 20px rgba(33,150,243,0.35);
+      box-shadow: 4px 4px 0 #000000;
       z-index: 999; display: flex; align-items: center; justify-content: center;
-      transition: all 0.3s ease; text-decoration: none;
+      transition: all 0.15s ease; text-decoration: none;
     }
 
-    .floating-support:hover { transform: scale(1.1); box-shadow: 0 10px 28px rgba(33,150,243,0.5); }
+    .floating-support:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #000000; }
     .floating-support i { animation: float 2s ease-in-out infinite; }
 
     @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
@@ -253,7 +256,7 @@
       .surveys-grid { grid-template-columns: 1fr; }
       .header-title { font-size: 17px; }
       .search-filter-bar { flex-direction: column; }
-      .floating-support { bottom: 16px; right: 16px; width: 48px; height: 48px; font-size: 20px; }
+      .floating-support { bottom: 16px; right: 16px; width: 48px; height: 48px; font-size: 20px; box-shadow: 3px 3px 0 #000000; }
       .footer-stats { gap: 14px; }
     }
 
