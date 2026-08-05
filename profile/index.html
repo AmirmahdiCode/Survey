@@ -15,10 +15,12 @@
       --bg: #ffffff; --bg2: #fef9f3; --bg3: #f5efe6;
       --dark: #0f172a; --text: #334155; --text-light: #94a3b8; --white: #ffffff;
       --card-bg: #ffffff; --card-border: #f0e8db;
-      --shadow: 0 2px 12px rgba(0,0,0,0.04); --shadow-hover: 0 8px 24px rgba(0,0,0,0.08);
+      --shadow: 4px 4px 0 #000000; --shadow-hover: 6px 6px 0 #000000;
+      --shadow-sm: 2px 2px 0 #000000;
       --header-bg: #ffffff; --footer-bg: #fef9f3;
       --overlay: rgba(249, 115, 22, 0.08);
       --logo-bg: #fef9f3;
+      --footer-height: 120px;
     }
 
     [data-theme="dark"] {
@@ -26,7 +28,8 @@
       --bg: #0f172a; --bg2: #1e293b; --bg3: #334155;
       --dark: #e2e8f0; --text: #cbd5e1; --text-light: #64748b; --white: #1e293b;
       --card-bg: #1e293b; --card-border: #334155;
-      --shadow: 0 2px 12px rgba(0,0,0,0.3); --shadow-hover: 0 8px 24px rgba(0,0,0,0.5);
+      --shadow: 4px 4px 0 #000000; --shadow-hover: 6px 6px 0 #000000;
+      --shadow-sm: 2px 2px 0 #000000;
       --header-bg: #1e293b; --footer-bg: #1e293b;
       --overlay: rgba(249, 115, 22, 0.12);
       --logo-bg: #1e293b;
@@ -37,12 +40,14 @@
       background: var(--bg); color: var(--text); min-height: 100vh;
       transition: all 0.3s ease;
       display: flex; flex-direction: column;
+      padding-bottom: calc(var(--footer-height) + 50px);
     }
 
     .header {
-      background: var(--header-bg); box-shadow: 0 1px 8px rgba(0,0,0,0.03);
+      background: var(--header-bg); box-shadow: 0 4px 0 #000000;
       padding: 14px 20px; position: sticky; top: 0; z-index: 100;
-      border-bottom: 1px solid var(--bg3); transition: all 0.3s ease;
+      border: 1px solid #000000; border-top: none; transition: all 0.3s ease;
+      margin: 0 0 4px 0;
     }
 
     .header-inner {
@@ -53,11 +58,11 @@
     .header-right { display: flex; align-items: center; gap: 10px; }
 
     .header-logo {
-      width: 42px; height: 42px; border-radius: 12px;
+      width: 42px; height: 42px; border-radius: 4px;
       background: var(--logo-bg);
       display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.15);
-      padding: 4px;
+      box-shadow: 3px 3px 0 #000000;
+      padding: 4px; border: 1px solid #000000;
     }
 
     .header-logo img { width: 100%; height: 100%; object-fit: contain; }
@@ -70,18 +75,19 @@
     .btn-back {
       display: flex; align-items: center; gap: 6px;
       font-size: 13px; font-weight: 600; color: var(--primary-dark); text-decoration: none;
-      padding: 8px 14px; border-radius: 10px; border: 1.5px solid var(--primary-light);
-      transition: all 0.3s ease; white-space: nowrap;
+      padding: 8px 14px; border-radius: 4px; border: 1px solid #000000;
+      transition: all 0.15s ease; white-space: nowrap;
+      box-shadow: 2px 2px 0 #000000; background: var(--card-bg);
     }
 
-    .btn-back:hover { background: var(--overlay); }
+    .btn-back:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000000; }
 
     .main-container { flex: 1; max-width: 700px; width: 100%; margin: 0 auto; padding: 20px 16px; }
 
     .loader-wrapper { display: flex; align-items: center; justify-content: center; min-height: 50vh; }
 
     .loader {
-      width: 48px; height: 48px; border: 4px solid var(--bg3);
+      width: 48px; height: 48px; border: 4px solid #000000;
       border-top-color: var(--primary); border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
@@ -104,22 +110,23 @@
     }
 
     .avatar-circle {
-      width: 70px; height: 70px; border-radius: 50%;
+      width: 70px; height: 70px; border-radius: 4px;
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       display: flex; align-items: center; justify-content: center;
       font-size: 30px; color: #fff;
-      box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.3);
-      transition: all 0.3s ease;
+      box-shadow: 4px 4px 0 #000000; border: 1px solid #000000;
+      transition: all 0.15s ease;
     }
 
-    .avatar-circle:hover { transform: scale(1.05); box-shadow: 0 6px 24px rgba(var(--primary-rgb), 0.4); }
+    .avatar-circle:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #000000; }
 
     .avatar-edit-badge {
       position: absolute; bottom: 0; right: 0;
-      width: 24px; height: 24px; border-radius: 50%;
-      background: var(--bg); border: 2px solid var(--primary);
+      width: 24px; height: 24px; border-radius: 4px;
+      background: var(--bg); border: 1px solid #000000;
       display: flex; align-items: center; justify-content: center;
       font-size: 10px; color: var(--primary);
+      box-shadow: 2px 2px 0 #000000;
     }
 
     .profile-info { flex: 1; min-width: 0; }
@@ -129,8 +136,8 @@
     .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
 
     .stat-card {
-      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
-      padding: 14px; text-align: center; box-shadow: var(--shadow);
+      background: var(--card-bg); border: 1px solid #000000; border-radius: 4px;
+      padding: 14px; text-align: center; box-shadow: 4px 4px 0 #000000;
     }
 
     .stat-card i { font-size: 20px; color: var(--primary); margin-bottom: 6px; display: block; }
@@ -142,19 +149,19 @@
       display: flex; align-items: center; gap: 8px; transition: color 0.3s;
     }
 
-    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--bg3); transition: background 0.3s; }
+    .section-title::after { content: ''; flex: 1; height: 2px; background: #000000; transition: background 0.3s; }
 
     .channels-list { margin-bottom: 24px; }
 
     .channel-item {
-      background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 10px;
+      background: var(--card-bg); border: 1px solid #000000; border-radius: 4px;
       padding: 10px 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 10px;
-      box-shadow: var(--shadow); transition: all 0.3s ease;
+      box-shadow: 4px 4px 0 #000000; transition: all 0.15s ease;
     }
 
     .channel-item i { color: var(--primary); font-size: 18px; }
     .channel-item span { font-size: 13px; color: var(--dark); flex: 1; }
-    .channel-item .channel-badge { font-size: 10px; background: var(--overlay); color: var(--primary); padding: 3px 10px; border-radius: 10px; }
+    .channel-item .channel-badge { font-size: 10px; background: var(--overlay); color: var(--primary); padding: 3px 10px; border-radius: 4px; border: 1px solid #000000; }
 
     .no-channels { text-align: center; padding: 20px; color: var(--text-light); font-size: 12px; }
 
@@ -166,9 +173,9 @@
     .modal-overlay.active { display: flex; }
 
     .modal-box {
-      background: var(--card-bg); border-radius: 16px; padding: 20px;
+      background: var(--card-bg); border-radius: 4px; padding: 20px;
       max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;
-      box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+      border: 1px solid #000000; box-shadow: 6px 6px 0 #000000;
     }
 
     .modal-title { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 16px; text-align: center; }
@@ -176,43 +183,143 @@
     .icons-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
 
     .icon-option {
-      width: 44px; height: 44px; border-radius: 10px;
+      width: 44px; height: 44px; border-radius: 4px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 20px; cursor: pointer; transition: all 0.2s ease;
-      background: var(--bg2); color: var(--text); border: 2px solid transparent;
+      font-size: 20px; cursor: pointer; transition: all 0.15s ease;
+      background: var(--bg2); color: var(--text); border: 1px solid #000000;
+      box-shadow: 2px 2px 0 #000000;
     }
 
-    .icon-option:hover { background: var(--overlay); color: var(--primary); border-color: var(--primary-light); }
+    .icon-option:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #000000; }
     .icon-option.selected { background: var(--primary); color: #fff; border-color: var(--primary); }
 
     .modal-close-btn {
       display: block; margin: 16px auto 0; padding: 8px 24px;
-      background: var(--primary); color: #fff; border: none; border-radius: 8px;
+      background: var(--primary); color: #fff; border: 1px solid #000000; border-radius: 4px;
       font-size: 13px; cursor: pointer; font-family: inherit;
+      box-shadow: 3px 3px 0 #000000; transition: all 0.15s ease;
     }
 
-    .footer { text-align: center; padding: 16px 20px; background: var(--footer-bg); border-top: 1px solid var(--bg3); transition: all 0.3s ease; }
+    .modal-close-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #000000; }
 
-    .footer-stats { display: flex; justify-content: center; gap: 24px; margin-bottom: 12px; flex-wrap: wrap; }
+    .footer {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      text-align: center; padding: 14px 20px;
+      background: var(--footer-bg); border-top: 1px solid #000000;
+      transition: all 0.3s ease; z-index: 90;
+    }
+
+    .footer-stats { display: flex; justify-content: center; gap: 24px; margin-bottom: 8px; flex-wrap: wrap; }
     .footer-stat { display: flex; align-items: center; gap: 6px; }
     .footer-stat i { font-size: 14px; color: var(--primary); }
     .footer-stat span { font-size: 14px; font-weight: 700; color: var(--dark); }
     .footer-stat small { font-size: 10px; color: var(--text-light); margin-right: 2px; }
 
-    .footer-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
-    .footer-links a { color: var(--primary-dark); font-size: 11px; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: color 0.3s; }
-    .footer-links a:hover { color: var(--dark); }
     .footer-text { font-size: 10px; color: var(--text-light); transition: color 0.3s; }
 
+    .floating-actions {
+      position: fixed;
+      bottom: calc(var(--footer-height) - 30px);
+      right: 24px;
+      display: flex;
+      gap: 10px;
+      z-index: 998;
+    }
+
+    .floating-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 4px;
+      color: #fff;
+      border: 1px solid #000000;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      box-shadow: 4px 4px 0 #000000;
+      position: relative;
+      direction: rtl;
+      font-family: inherit;
+    }
+
+    .floating-btn.btn-support { background: #2196F3; }
+    .floating-btn.btn-about { background: var(--primary); }
+    .floating-btn.btn-guide { background: var(--primary); }
+    .floating-btn.btn-contact { background: var(--primary); }
+
+    .floating-btn i {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+
+    .floating-btn .btn-text {
+      opacity: 0;
+      padding: 0 56px 0 18px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-block;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .floating-btn.expanded {
+      width: 150px;
+      border-radius: 4px;
+    }
+
+    .floating-btn.expanded .btn-text {
+      opacity: 1;
+    }
+
+    .floating-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 #000000; }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 14px;
+      background: #fff;
+      margin-right: 2px;
+      animation: blink 0.8s infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
     @media (max-width: 768px) {
+      :root { --footer-height: 130px; }
       .icons-grid { grid-template-columns: repeat(6, 1fr); }
       .header-title { font-size: 17px; }
       .stats-row { grid-template-columns: repeat(3, 1fr); gap: 8px; }
       .stat-card { padding: 10px 6px; }
       .stat-card .stat-value { font-size: 15px; }
+      .floating-actions { bottom: calc(var(--footer-height) - 35px); right: 12px; gap: 8px; }
+      .floating-btn { width: 42px; height: 42px; box-shadow: 3px 3px 0 #000000; }
+      .floating-btn i { width: 42px; height: 42px; font-size: 16px; }
+      .floating-btn .btn-text { padding: 0 48px 0 14px; font-size: 11px; }
+      .floating-btn.expanded { width: 135px; }
+      .footer-stats { gap: 14px; }
+      .footer { padding: 10px 16px; }
     }
 
     @media (max-width: 400px) {
+      :root { --footer-height: 140px; }
       .icons-grid { grid-template-columns: repeat(5, 1fr); }
       .icon-option { width: 38px; height: 38px; font-size: 17px; }
       .profile-header { gap: 12px; }
@@ -295,6 +402,25 @@
     </div>
   </section>
 
+  <div class="floating-actions">
+    <button class="floating-btn btn-support" id="floatingSupport" onclick="window.location.href='../support/'" title="پشتیبانی">
+      <span class="btn-text" id="supportText"></span>
+      <i class="fa-solid fa-headset"></i>
+    </button>
+    <button class="floating-btn btn-about" id="floatingAbout" onclick="window.location.href='../about/'" title="درباره ما">
+      <span class="btn-text" id="aboutText"></span>
+      <i class="fa-solid fa-circle-info"></i>
+    </button>
+    <button class="floating-btn btn-guide" id="floatingGuide" onclick="window.location.href='../guide/'" title="راهنما">
+      <span class="btn-text" id="guideText"></span>
+      <i class="fa-solid fa-book"></i>
+    </button>
+    <button class="floating-btn btn-contact" id="floatingContact" onclick="window.location.href='../contact/'" title="ارتباط با ما">
+      <span class="btn-text" id="contactText"></span>
+      <i class="fa-solid fa-phone"></i>
+    </button>
+  </div>
+
   <footer class="footer">
     <div class="footer-stats">
       <div class="footer-stat">
@@ -312,11 +438,6 @@
         <small>نظرسنجی فعال</small>
         <span id="footerActive">—</span>
       </div>
-    </div>
-    <div class="footer-links">
-      <a href="../about/"><i class="fa-solid fa-circle-info"></i> درباره ما</a>
-      <a href="../guide/"><i class="fa-solid fa-book"></i> راهنما</a>
-      <a href="../contact/"><i class="fa-solid fa-phone"></i> ارتباط با ما</a>
     </div>
     <p class="footer-text">نظرسنجی‌ساز ایتا — کلیه حقوق محفوظ است</p>
   </footer>
@@ -544,10 +665,62 @@
         document.getElementById('errorState').classList.add('loaded');
       }
 
+      function typeText(element, text, callback) {
+        let i = 0;
+        element.innerHTML = '<span class="typing-cursor"></span>';
+        const cursor = element.querySelector('.typing-cursor');
+        
+        function type() {
+          if (i < text.length) {
+            cursor.insertAdjacentText('beforebegin', text[i]);
+            i++;
+            setTimeout(type, 80);
+          } else {
+            cursor.remove();
+            if (callback) setTimeout(callback, 2000);
+          }
+        }
+        type();
+      }
+
+      function clearText(element, callback) {
+        element.textContent = '';
+        if (callback) callback();
+      }
+
+      function animateFloatingButtons() {
+        const buttons = [
+          { btn: document.getElementById('floatingSupport'), text: document.getElementById('supportText'), label: 'پشتیبانی' },
+          { btn: document.getElementById('floatingAbout'), text: document.getElementById('aboutText'), label: 'درباره ما' },
+          { btn: document.getElementById('floatingGuide'), text: document.getElementById('guideText'), label: 'راهنما' },
+          { btn: document.getElementById('floatingContact'), text: document.getElementById('contactText'), label: 'ارتباط با ما' }
+        ];
+
+        if (!buttons[0].btn) return;
+
+        let currentIndex = 0;
+
+        function cycle() {
+          const current = buttons[currentIndex];
+          
+          current.btn.classList.add('expanded');
+          typeText(current.text, current.label, () => {
+            clearText(current.text);
+            current.btn.classList.remove('expanded');
+          });
+
+          currentIndex = (currentIndex + 1) % buttons.length;
+        }
+
+        cycle();
+        setInterval(cycle, 5000);
+      }
+
       initTheme();
       initBackButton();
       ready();
       loadAllData();
+      setTimeout(animateFloatingButtons, 1000);
     })();
   </script>
 
